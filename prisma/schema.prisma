@@ -1,14 +1,13 @@
 // Westoria ecommerce database schema
-// Default provider is SQLite for zero-setup local development.
-// To move to Postgres for production: change provider to "postgresql",
-// set DATABASE_URL to a Postgres connection string, then run `npm run db:migrate`.
+// Postgres-backed (works with Vercel Postgres / Neon / Supabase / RDS, etc.)
+// Set DATABASE_URL to your Postgres connection string, then run `npm run db:migrate`.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
