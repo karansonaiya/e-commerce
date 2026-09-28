@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="900" viewBox="0 0 1920 900">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b5121b"/>
+      <stop offset="100%" stop-color="#c8a35a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="900" fill="url(#g)"/>
+  <circle cx="1550" cy="220" r="260" fill="#ffffff" opacity="0.06"/>
+  <circle cx="300" cy="720" r="200" fill="#ffffff" opacity="0.06"/>
+  <text x="120" y="420" font-family="Georgia, serif" font-size="96" fill="#fdf6ec" letter-spacing="1">Hair, Reimagined</text>
+  <text x="120" y="480" font-family="Arial, sans-serif" font-size="30" fill="#fdf6ec" opacity="0.9">Shampoos crafted for strength & shine</text>
+</svg>
