@@ -12,9 +12,7 @@ export default auth((req) => {
 
   if (pathname.startsWith("/admin")) {
     if (!isLoggedIn || !isAdminEmail(email)) {
-      const url = new URL("/login", req.nextUrl.origin);
-      url.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/", req.nextUrl.origin));
     }
   }
 

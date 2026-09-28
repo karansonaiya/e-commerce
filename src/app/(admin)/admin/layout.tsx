@@ -24,7 +24,7 @@ const NAV = [
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user || !isAdminEmail(session.user.email)) {
-    redirect("/login?callbackUrl=/admin");
+    redirect("/");
   }
 
   return (
