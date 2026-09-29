@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,10 @@ export const metadata = { title: "Orders — Admin" };
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
-    include: { user: { select: { name: true, email: true } } },
+    include: {
+      user: { select: { name: true, email: true } },
+      items: { select: { id: true, name: true, image: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -23,6 +27,7 @@ export default async function AdminOrdersPage() {
             <thead>
               <tr className="border-b border-[var(--color-ink)]/10 text-left text-[var(--color-ink-soft)]">
                 <th className="p-4">Order</th>
+                <th className="p-4">Product</th>
                 <th className="p-4">Customer</th>
                 <th className="p-4">Payment</th>
                 <th className="p-4">Total</th>
@@ -37,6 +42,25 @@ export default async function AdminOrdersPage() {
                     <Link href={`/admin/orders/${order.id}`} className="hover:text-[var(--color-brand)]">
                       #{order.id.slice(-8).toUpperCase()}
                     </Link>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center -space-x-2" title={order.items.map((i) => i.name).join(", ")}>
+                      {order.items.slice(0, 3).map((item) => (
+                        <div
+                          key={item.id}
+                          className="relative size-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-[var(--color-cream-dark)]"
+                        >
+                          {item.image && (
+                            <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
+                          )}
+                        </div>
+                      ))}
+                      {order.items.length > 3 && (
+                        <div className="relative flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[var(--color-ink)] text-[10px] font-semibold text-white">
+                          +{order.items.length - 3}
+                        </div>
+                      )}
+                    </div>
                   </td>
                   <td className="p-4 text-[var(--color-ink-soft)]">
                     {order.user.name ?? order.user.email}
@@ -57,7 +81,7 @@ export default async function AdminOrdersPage() {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-[var(--color-ink-soft)]">
+                  <td colSpan={7} className="p-6 text-center text-[var(--color-ink-soft)]">
                     No orders yet.
                   </td>
                 </tr>

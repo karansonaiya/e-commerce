@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -43,8 +44,13 @@ export default async function AdminOrderDetailPage({
             <h2 className="font-display font-semibold">Items</h2>
             <ul className="mt-3 divide-y divide-[var(--color-ink)]/5">
               {order.items.map((item) => (
-                <li key={item.id} className="flex justify-between py-3 text-sm">
-                  <span>{item.name} × {item.quantity}</span>
+                <li key={item.id} className="flex items-center gap-5 py-5 text-sm">
+                  <div className="relative size-36 shrink-0 overflow-hidden rounded-lg border border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)] w-[220px] h-[250px]">
+                    {item.image && (
+                      <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
+                    )}
+                  </div>
+                  <span className="flex-1 text-base font-medium">{item.name} × {item.quantity}</span>
                   <span className="font-medium">{formatINR(item.price * item.quantity)}</span>
                 </li>
               ))}

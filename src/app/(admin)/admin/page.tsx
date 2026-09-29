@@ -1,4 +1,5 @@
 import { Package, ShoppingCart, Users, IndianRupee } from "lucide-react";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,10 @@ export default async function AdminDashboardPage() {
     prisma.order.findMany({
       take: 5,
       orderBy: { createdAt: "desc" },
-      include: { user: { select: { name: true, email: true } } },
+      include: {
+        user: { select: { name: true, email: true } },
+        items: { select: { id: true, name: true, image: true } },
+      },
     }),
   ]);
 
@@ -53,6 +57,7 @@ export default async function AdminDashboardPage() {
             <thead>
               <tr className="border-b border-[var(--color-ink)]/10 text-left text-[var(--color-ink-soft)]">
                 <th className="p-4">Order</th>
+                <th className="p-4">Product</th>
                 <th className="p-4">Customer</th>
                 <th className="p-4">Status</th>
                 <th className="p-4">Total</th>
@@ -62,6 +67,25 @@ export default async function AdminDashboardPage() {
               {recentOrders.map((order) => (
                 <tr key={order.id} className="border-b border-[var(--color-ink)]/5 last:border-0">
                   <td className="p-4 font-medium">#{order.id.slice(-8).toUpperCase()}</td>
+                  <td className="p-4">
+                    <div className="flex items-center -space-x-2" title={order.items.map((i) => i.name).join(", ")}>
+                      {order.items.slice(0, 3).map((item) => (
+                        <div
+                          key={item.id}
+                          className="relative size-8 shrink-0 overflow-hidden rounded-full border-2 border-white bg-[var(--color-cream-dark)]"
+                        >
+                          {item.image && (
+                            <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
+                          )}
+                        </div>
+                      ))}
+                      {order.items.length > 3 && (
+                        <div className="relative flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[var(--color-ink)] text-[10px] font-semibold text-white">
+                          +{order.items.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  </td>
                   <td className="p-4 text-[var(--color-ink-soft)]">
                     {order.user.name ?? order.user.email}
                   </td>
@@ -73,7 +97,7 @@ export default async function AdminDashboardPage() {
               ))}
               {recentOrders.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="p-6 text-center text-[var(--color-ink-soft)]">
+                  <td colSpan={5} className="p-6 text-center text-[var(--color-ink-soft)]">
                     No orders yet.
                   </td>
                 </tr>
