@@ -8,6 +8,7 @@ import { parse } from "url";
 import next from "next";
 import { Server } from "socket.io";
 import { setIO } from "./src/lib/socket";
+import { serveUploadFile } from "./src/lib/serve-upload-file";
 
 const dev = process.argv.includes("--dev");
 const hostname = process.env.HOSTNAME || "localhost";
@@ -19,6 +20,12 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   const httpServer = createServer((req, res) => {
     const parsedUrl = parse(req.url ?? "/", true);
+
+    if (parsedUrl.pathname?.startsWith("/uploads/")) {
+      serveUploadFile(res, parsedUrl.pathname);
+      return;
+    }
+
     handle(req, res, parsedUrl);
   });
 

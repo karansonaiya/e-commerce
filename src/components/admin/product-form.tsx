@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImagePicker } from "@/components/admin/image-picker";
 import {
   Select,
   SelectContent,
@@ -64,10 +65,7 @@ export function ProductForm({
         <Textarea id="description" name="description" required rows={4} defaultValue={defaults?.description} className="mt-1.5" />
       </div>
 
-      <div>
-        <Label htmlFor="images">Image URLs (comma-separated)</Label>
-        <Input id="images" name="images" required defaultValue={defaults?.images} className="mt-1.5" />
-      </div>
+      <ImagePicker defaultValue={defaults?.images} />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
