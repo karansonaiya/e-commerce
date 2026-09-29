@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { formatINR } from "@/lib/utils";
-import { getSocket } from "@/lib/socket-client";
+import { subscribeRealtime } from "@/lib/realtime-client";
 
 const STATUS_VARIANT: Record<string, "soft" | "warning" | "success" | "destructive"> = {
   Pending: "soft",
@@ -26,19 +26,15 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
   const [orders, setOrders] = useState(initialOrders);
 
   useEffect(() => {
-    const socket = getSocket();
-
-    function handleUpdate(payload: { orderId: string; userId: string; status: string }) {
-      if (payload.userId !== userId) return;
+    function handleUpdate(payload: unknown) {
+      const p = payload as { orderId: string; userId: string; status: string };
+      if (p.userId !== userId) return;
       setOrders((prev) =>
-        prev.map((o) => (o.id === payload.orderId ? { ...o, status: payload.status } : o))
+        prev.map((o) => (o.id === p.orderId ? { ...o, status: p.status } : o))
       );
     }
 
-    socket.on("order:update", handleUpdate);
-    return () => {
-      socket.off("order:update", handleUpdate);
-    };
+    return subscribeRealtime("order:update", handleUpdate);
   }, [userId]);
 
   if (orders.length === 0) {

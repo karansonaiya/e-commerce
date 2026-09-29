@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
-import { emitEvent } from "@/lib/socket";
+import { emitEvent } from "@/lib/redis";
 
 const VALID_STATUSES = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
 

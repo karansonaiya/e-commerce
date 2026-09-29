@@ -5,7 +5,7 @@ import { Truck, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { OrderTimeline } from "@/components/store/order-timeline";
-import { getSocket } from "@/lib/socket-client";
+import { subscribeRealtime } from "@/lib/realtime-client";
 
 const STATUS_VARIANT: Record<string, "soft" | "warning" | "success" | "destructive"> = {
   Pending: "soft",
@@ -28,30 +28,26 @@ export function OrderDetailLive({ order: initial }: { order: OrderDetailData }) 
   const [order, setOrder] = useState(initial);
 
   useEffect(() => {
-    const socket = getSocket();
-
-    function handleUpdate(payload: {
-      orderId: string;
-      userId: string;
-      status: string;
-      trackingNumber?: string | null;
-      courierName?: string | null;
-      trackingUrl?: string | null;
-    }) {
-      if (payload.orderId !== initial.id || payload.userId !== initial.userId) return;
+    function handleUpdate(payload: unknown) {
+      const p = payload as {
+        orderId: string;
+        userId: string;
+        status: string;
+        trackingNumber?: string | null;
+        courierName?: string | null;
+        trackingUrl?: string | null;
+      };
+      if (p.orderId !== initial.id || p.userId !== initial.userId) return;
       setOrder((prev) => ({
         ...prev,
-        status: payload.status,
-        trackingNumber: payload.trackingNumber !== undefined ? payload.trackingNumber : prev.trackingNumber,
-        courierName: payload.courierName !== undefined ? payload.courierName : prev.courierName,
-        trackingUrl: payload.trackingUrl !== undefined ? payload.trackingUrl : prev.trackingUrl,
+        status: p.status,
+        trackingNumber: p.trackingNumber !== undefined ? p.trackingNumber : prev.trackingNumber,
+        courierName: p.courierName !== undefined ? p.courierName : prev.courierName,
+        trackingUrl: p.trackingUrl !== undefined ? p.trackingUrl : prev.trackingUrl,
       }));
     }
 
-    socket.on("order:update", handleUpdate);
-    return () => {
-      socket.off("order:update", handleUpdate);
-    };
+    return subscribeRealtime("order:update", handleUpdate);
   }, [initial.id, initial.userId]);
 
   return (

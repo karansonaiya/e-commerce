@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getSocket } from "@/lib/socket-client";
+import { subscribeRealtime } from "@/lib/realtime-client";
 
 export type ProductLiveState = {
   stock: number;
@@ -30,27 +30,27 @@ export function useProductLive(productId: string, initial: ProductLiveState) {
   }, [productId]);
 
   useEffect(() => {
-    const socket = getSocket();
-
-    function handleUpdate(payload: ProductUpdatePayload) {
-      if (payload.id !== productId) return;
+    function handleUpdate(payload: unknown) {
+      const p = payload as ProductUpdatePayload;
+      if (p.id !== productId) return;
       setState((prev) => ({
-        stock: payload.stock ?? prev.stock,
-        price: payload.price ?? prev.price,
-        salePrice: payload.salePrice !== undefined ? payload.salePrice : prev.salePrice,
+        stock: p.stock ?? prev.stock,
+        price: p.price ?? prev.price,
+        salePrice: p.salePrice !== undefined ? p.salePrice : prev.salePrice,
       }));
     }
 
-    function handleDelete(payload: { id: string }) {
-      if (payload.id !== productId) return;
+    function handleDelete(payload: unknown) {
+      const p = payload as { id: string };
+      if (p.id !== productId) return;
       setState((prev) => ({ ...prev, stock: 0 }));
     }
 
-    socket.on("product:update", handleUpdate);
-    socket.on("product:delete", handleDelete);
+    const unsubUpdate = subscribeRealtime("product:update", handleUpdate);
+    const unsubDelete = subscribeRealtime("product:delete", handleDelete);
     return () => {
-      socket.off("product:update", handleUpdate);
-      socket.off("product:delete", handleDelete);
+      unsubUpdate();
+      unsubDelete();
     };
   }, [productId]);
 

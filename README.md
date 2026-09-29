@@ -1,17 +1,18 @@
 # Westoria — Premium Skincare & Haircare Ecommerce
 
 A production-ready ecommerce storefront + admin panel for **Westoria**, built with
-Next.js 15 (App Router), TypeScript, Tailwind CSS, Prisma, NextAuth.js v5, Socket.IO, and Cashfree.
+Next.js 15 (App Router), TypeScript, Tailwind CSS, Prisma, NextAuth.js v5, Redis, and Cashfree.
 Categories: **Face Wash**, **Serum**, **Shampoo**.
 
 ## Tech Stack
 
-- Next.js 15 (App Router) + TypeScript, served via a custom Node server (`server.ts`) for Socket.IO
+- Next.js 15 (App Router) + TypeScript — fully serverless-compatible, deploys cleanly to Vercel
 - Tailwind CSS v4 + hand-rolled shadcn-style UI primitives (Radix UI under the hood)
 - Prisma ORM — Postgres (Vercel Postgres / Neon / Supabase / Cashfree's own Postgres, etc.)
 - NextAuth.js v5 (Auth.js) — Google OAuth + Email/Password (Credentials)
 - Cashfree Payment Gateway (INR payments, sandbox + production)
-- Socket.IO — realtime stock/price updates and live order-status updates
+- Realtime stock/price + order-status updates via **Server-Sent Events + Redis pub/sub**
+  (Upstash Redis) — no custom server, works on Vercel serverless
 - Zustand (cart & wishlist state, persisted to localStorage)
 - React Hook Form + Zod (forms & validation)
 - Framer Motion (hero carousel & transitions)
@@ -34,7 +35,7 @@ src/
     admin/           → admin-only components
     providers/       → SessionProvider + Toaster
   actions/           → server actions for admin CRUD (products, categories, orders)
-  lib/               → prisma client, auth config, cashfree client, zod schemas, data fetchers
+  lib/               → prisma client, auth config, cashfree client, redis publisher, zod schemas, data fetchers
   stores/            → zustand cart & wishlist stores
   types/             → shared TypeScript types
 prisma/
@@ -55,8 +56,6 @@ npm run dev
 Visit **http://localhost:3000**.
 
 > `npm install` automatically runs `prisma generate` via the `postinstall` script.
-> `npm run dev` / `npm run start` run a custom server (`server.ts`), not plain `next dev` —
-> this is what attaches Socket.IO. Same commands, same URL, nothing else changes for you.
 
 ### Seeded accounts
 
@@ -136,30 +135,43 @@ Vercel, no persistent disk needed. The app also ships with locally-generated pla
 (`public/images/...`) for the seeded catalog. You can still paste any external image URL instead —
 `next.config.ts` already allow-lists Cloudinary and Uploadthing hosts for `next/image`.
 
-## 6. Deploying — read this before picking a host
+## 6. Set Up Redis (realtime updates)
 
-This app uses **Socket.IO** (`server.ts`) for realtime stock/price and order-status updates, which
-needs a **persistent Node.js process** — it does **not** work on Vercel's serverless functions (no
-long-lived custom server). Everything else (pages, API routes, Cashfree checkout, auth, Cloudinary
-image uploads) works fine on Vercel — you'd just lose realtime updates there.
+Powers the live stock/price updates on product pages and live order-status/tracking updates on
+account pages. Implemented as Server-Sent Events (`GET /api/realtime`) backed by Redis pub/sub —
+works the same in local dev and on Vercel, no persistent server needed.
 
-**Recommended: deploy to a persistent host** (Railway, Render, Fly.io, a VPS, etc.):
+1. Create a free database at [Upstash](https://console.upstash.com/) → **Redis** → **Create Database**
+   (any region).
+2. On the database page, copy the **TCP connection string** (starts with `rediss://...`, *not* the
+   REST URL/token pair — pub/sub needs the TCP protocol) into `.env`:
+   ```
+   REDIS_URL="rediss://default:<password>@<endpoint>:<port>"
+   ```
+3. That's it — `src/lib/redis.ts` (`emitEvent`, server-side) publishes to a shared
+   `westoria-updates` channel; `src/app/api/realtime/route.ts` subscribes and streams matching
+   events to the browser over SSE; `src/lib/realtime-client.ts` (`subscribeRealtime`, client-side)
+   consumes it via the native `EventSource` API — no client library needed.
+4. If `REDIS_URL` is missing, realtime updates just silently no-op instead of throwing — the rest
+   of the site keeps working.
 
-1. Push this repo to GitHub/GitLab/Bitbucket.
-2. Set the start command to `npm run build && npm run start` (or build once, then `npm run start`).
-3. Add all environment variables from `.env.example` (production `NEXTAUTH_URL`/`NEXT_PUBLIC_SITE_URL`,
-   live Cashfree keys, `DATABASE_URL`, `CLOUDINARY_URL`, etc.).
-4. After first deploy, run migrations against production:
+**Note on Vercel's free (Hobby) plan:** serverless functions have a 5-minute max duration, so a
+long-open SSE connection gets cut and automatically reconnects every ~5 minutes (the browser's
+`EventSource` handles this natively — you may see a brief gap, not an error).
+
+## 7. Deploying
+
+This app is fully serverless-compatible — no custom server, works on Vercel out of the box.
+
+1. Push this repo to GitHub/GitLab/Bitbucket and import it into [Vercel](https://vercel.com/new).
+2. Add all environment variables from `.env.example` (production `NEXTAUTH_URL`/`NEXT_PUBLIC_SITE_URL`,
+   live Cashfree keys, `DATABASE_URL`, `CLOUDINARY_URL`, `REDIS_URL`, etc.).
+3. After first deploy, run migrations against production:
    ```bash
    npx prisma migrate deploy
    npx tsx prisma/seed.ts   # optional: seed sample catalog
    ```
-5. Update the Google OAuth redirect URI and the Cashfree webhook URL to your production domain.
-
-**If you deploy to Vercel anyway:** it will build and serve the storefront/checkout/admin fine;
-Socket.IO simply won't connect (client silently has no realtime updates) and product-image uploads
-will 404 after the first request from a new serverless instance — switch that feature to
-Cloudinary/Uploadthing if you go this route.
+4. Update the Google OAuth redirect URI and the Cashfree webhook URL to your production domain.
 
 ## Scripts
 

@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { productSchema } from "@/lib/validations/product";
 import { slugify } from "@/lib/utils";
-import { emitEvent } from "@/lib/socket";
+import { emitEvent } from "@/lib/redis";
 
 export type ProductFormValues = {
   name: string;

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getCashfreeClient } from "@/lib/cashfree";
-import { emitEvent } from "@/lib/socket";
+import { emitEvent } from "@/lib/redis";
 
 type FinalizeResult =
   | { success: true; alreadyPaid: boolean }
