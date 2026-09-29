@@ -130,30 +130,25 @@ Visit `/admin` while logged in as the admin email. Features:
 All admin routes are protected by `src/middleware.ts` (redirects non-admins to `/login`) and by a
 server-side `requireAdmin()` check inside every admin server action, for defense in depth.
 
-Image hosting: uploading from the admin panel saves files to `public/uploads/` on the server
-(served fresh from disk on every request via `server.ts`, not Next's static cache — see
-`src/lib/serve-upload-file.ts`). The app also ships with locally-generated placeholder SVGs
-(`public/images/...`) for the seeded catalog. You can still paste an external URL instead
-(e.g. Cloudinary/Uploadthing) — `next.config.ts` already allow-lists both hosts for `next/image`.
+Image hosting: uploading from the admin panel sends the file to **Cloudinary** (via `CLOUDINARY_URL`)
+and stores the returned `secure_url` on the product — works identically on local dev and on
+Vercel, no persistent disk needed. The app also ships with locally-generated placeholder SVGs
+(`public/images/...`) for the seeded catalog. You can still paste any external image URL instead —
+`next.config.ts` already allow-lists Cloudinary and Uploadthing hosts for `next/image`.
 
 ## 6. Deploying — read this before picking a host
 
-This app uses two features that need a **persistent Node.js process**, not serverless functions:
-
-- **Socket.IO** (`server.ts`) — realtime stock/price and order-status updates.
-- **Local image uploads** (`public/uploads/`) — written to disk at runtime.
-
-**Neither works on Vercel's serverless functions** (no long-lived custom server, no persistent
-filesystem between requests). Everything else in the app (pages, API routes, Cashfree checkout,
-auth) works fine on Vercel — you'd just lose realtime updates and would need to switch uploads to
-Cloudinary/Uploadthing/S3 instead of local disk.
+This app uses **Socket.IO** (`server.ts`) for realtime stock/price and order-status updates, which
+needs a **persistent Node.js process** — it does **not** work on Vercel's serverless functions (no
+long-lived custom server). Everything else (pages, API routes, Cashfree checkout, auth, Cloudinary
+image uploads) works fine on Vercel — you'd just lose realtime updates there.
 
 **Recommended: deploy to a persistent host** (Railway, Render, Fly.io, a VPS, etc.):
 
 1. Push this repo to GitHub/GitLab/Bitbucket.
 2. Set the start command to `npm run build && npm run start` (or build once, then `npm run start`).
 3. Add all environment variables from `.env.example` (production `NEXTAUTH_URL`/`NEXT_PUBLIC_SITE_URL`,
-   live Cashfree keys, `DATABASE_URL`, etc.).
+   live Cashfree keys, `DATABASE_URL`, `CLOUDINARY_URL`, etc.).
 4. After first deploy, run migrations against production:
    ```bash
    npx prisma migrate deploy

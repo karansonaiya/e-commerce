@@ -41,9 +41,6 @@ yarn-error.log*
 /prisma/dev.db-journal
 /generated
 
-# admin-uploaded product images (runtime content, not source-controlled)
-/public/uploads
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
