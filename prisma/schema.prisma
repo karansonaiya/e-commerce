@@ -173,6 +173,10 @@ model Order {
 
   status String @default("Pending") // Pending | Processing | Shipped | Delivered | Cancelled
 
+  trackingNumber String?
+  courierName    String?
+  trackingUrl    String?
+
   cfOrderId     String?
   cfPaymentId   String?
   paymentStatus String  @default("Unpaid") // Unpaid | Paid | Failed | Refunded

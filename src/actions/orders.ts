@@ -18,4 +18,31 @@ export async function updateOrderStatus(id: string, status: string) {
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   revalidatePath("/account");
+  revalidatePath(`/account/orders/${id}`);
+}
+
+export async function updateOrderTracking(id: string, formData: FormData) {
+  await requireAdmin();
+
+  const trackingNumber = String(formData.get("trackingNumber") || "").trim() || null;
+  const courierName = String(formData.get("courierName") || "").trim() || null;
+  const trackingUrl = String(formData.get("trackingUrl") || "").trim() || null;
+
+  const updated = await prisma.order.update({
+    where: { id },
+    data: { trackingNumber, courierName, trackingUrl },
+  });
+
+  emitEvent("order:update", {
+    orderId: updated.id,
+    userId: updated.userId,
+    status: updated.status,
+    trackingNumber: updated.trackingNumber,
+    courierName: updated.courierName,
+    trackingUrl: updated.trackingUrl,
+  });
+
+  revalidatePath(`/admin/orders/${id}`);
+  revalidatePath("/account");
+  revalidatePath(`/account/orders/${id}`);
 }

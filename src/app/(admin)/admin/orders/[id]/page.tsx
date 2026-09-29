@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatINR } from "@/lib/utils";
 import { OrderStatusSelect } from "@/components/admin/order-status-select";
+import { OrderTrackingForm } from "@/components/admin/order-tracking-form";
+import { OrderTimeline } from "@/components/store/order-timeline";
 
 export const metadata = { title: "Order Details — Admin" };
 
@@ -28,6 +30,12 @@ export default async function AdminOrderDetailPage({
         </h1>
         <OrderStatusSelect orderId={order.id} status={order.status} />
       </div>
+
+      <Card className="mt-6">
+        <CardContent className="p-5">
+          <OrderTimeline status={order.status} />
+        </CardContent>
+      </Card>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -82,6 +90,19 @@ export default async function AdminOrderDetailPage({
                 {order.address.line2 ? `, ${order.address.line2}` : ""}, {order.address.city},{" "}
                 {order.address.state} {order.address.postalCode}
               </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-5">
+              <h2 className="font-display font-semibold">Shipping & Tracking</h2>
+              <div className="mt-3">
+                <OrderTrackingForm
+                  orderId={order.id}
+                  trackingNumber={order.trackingNumber}
+                  courierName={order.courierName}
+                  trackingUrl={order.trackingUrl}
+                />
+              </div>
             </CardContent>
           </Card>
           <Card>

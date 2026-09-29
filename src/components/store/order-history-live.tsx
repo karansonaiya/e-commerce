@@ -56,7 +56,11 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
   return (
     <div className="mt-4 space-y-4">
       {orders.map((order) => (
-        <div key={order.id} className="rounded-xl border border-[var(--color-ink)]/10 p-5">
+        <Link
+          key={order.id}
+          href={`/account/orders/${order.id}`}
+          className="block rounded-xl border border-[var(--color-ink)]/10 p-5 transition hover:border-[var(--color-brand)]/40"
+        >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <p className="font-medium">Order #{order.id.slice(-8).toUpperCase()}</p>
@@ -71,8 +75,11 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
               </li>
             ))}
           </ul>
-          <p className="mt-3 font-semibold">{formatINR(order.total)}</p>
-        </div>
+          <div className="mt-3 flex items-center justify-between">
+            <p className="font-semibold">{formatINR(order.total)}</p>
+            <span className="text-xs font-medium text-[var(--color-brand)]">Track order →</span>
+          </div>
+        </Link>
       ))}
     </div>
   );

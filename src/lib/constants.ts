@@ -22,6 +22,7 @@ export const FOOTER_LINKS = {
   company: [
     { label: "About Us", href: "/about" },
     { label: "Contact Us", href: "/contact" },
+    { label: "Track Order", href: "/track" },
     { label: "Your Account", href: "/account" },
   ],
   legal: [
