@@ -11,6 +11,10 @@ export const authConfig: NextAuthConfig = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      // Lets a Google sign-in link to an existing account that has the same
+      // (Google-verified) email but was created via the password/Credentials
+      // flow — otherwise Auth.js blocks it with OAuthAccountNotLinked.
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
