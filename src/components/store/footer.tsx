@@ -38,7 +38,7 @@ export function Footer() {
 
       <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-xs text-[var(--color-cream)]/60 md:flex-row">
         <p>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</p>
-        <p>Made with care in India · Secure payments via Razorpay</p>
+        <p>Made with care in India · Secure payments via Cashfree</p>
       </div>
     </footer>
   );

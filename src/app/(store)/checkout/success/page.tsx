@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { formatINR } from "@/lib/utils";
+import { finalizeOrderPayment } from "@/lib/finalize-order";
+import { ClearCartOnMount } from "@/components/store/clear-cart-on-mount";
 
 export const metadata = { title: "Order Confirmed" };
 
@@ -18,15 +20,47 @@ export default async function CheckoutSuccessPage({
 
   if (!orderId || !session?.user?.id) notFound();
 
-  const order = await prisma.order.findFirst({
+  let order = await prisma.order.findFirst({
     where: { id: orderId, userId: session.user.id },
     include: { items: true, address: true },
   });
-
   if (!order) notFound();
+
+  if (order.paymentStatus !== "Paid") {
+    const result = await finalizeOrderPayment(order.id);
+
+    if (!result.success) {
+      return (
+        <div className="container-x flex flex-col items-center py-20 text-center">
+          <XCircle className="size-16 text-red-500" />
+          <h1 className="font-display mt-4 text-3xl font-semibold">Payment Not Completed</h1>
+          <p className="mt-2 text-[var(--color-ink-soft)]">
+            Your order #{order.id.slice(-8).toUpperCase()} is still unpaid
+            {result.status ? ` (status: ${result.status})` : ""}. No amount has been charged for
+            this attempt.
+          </p>
+          <div className="mt-8 flex gap-3">
+            <Button asChild variant="outline">
+              <Link href="/cart">Back to Cart</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/checkout">Try Again</Link>
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    order = await prisma.order.findFirst({
+      where: { id: orderId, userId: session.user.id },
+      include: { items: true, address: true },
+    });
+    if (!order) notFound();
+  }
 
   return (
     <div className="container-x flex flex-col items-center py-20 text-center">
+      <ClearCartOnMount />
       <CheckCircle2 className="size-16 text-emerald-600" />
       <h1 className="font-display mt-4 text-3xl font-semibold">Order Confirmed!</h1>
       <p className="mt-2 text-[var(--color-ink-soft)]">

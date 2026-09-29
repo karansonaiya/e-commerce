@@ -90,9 +90,9 @@ export default async function AdminOrderDetailPage({
               <Badge variant={order.paymentStatus === "Paid" ? "success" : "soft"} className="mt-2">
                 {order.paymentStatus}
               </Badge>
-              {order.razorpayPaymentId && (
+              {order.cfPaymentId && (
                 <p className="mt-2 break-all text-xs text-[var(--color-ink-soft)]/70">
-                  Payment ID: {order.razorpayPaymentId}
+                  Payment ID: {order.cfPaymentId}
                 </p>
               )}
             </CardContent>

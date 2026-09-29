@@ -1,7 +1,7 @@
 import { createReadStream } from "fs";
 import { stat } from "fs/promises";
 import path from "path";
-import type { IncomingMessage, ServerResponse } from "http";
+import type { ServerResponse } from "http";
 
 // Next's production static-file serving snapshots the `public/` directory at
 // server startup, so files an admin uploads while the server is already

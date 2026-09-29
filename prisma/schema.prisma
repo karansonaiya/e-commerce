@@ -173,10 +173,9 @@ model Order {
 
   status String @default("Pending") // Pending | Processing | Shipped | Delivered | Cancelled
 
-  razorpayOrderId   String?
-  razorpayPaymentId String?
-  razorpaySignature String?
-  paymentStatus     String  @default("Unpaid") // Unpaid | Paid | Failed | Refunded
+  cfOrderId     String?
+  cfPaymentId   String?
+  paymentStatus String  @default("Unpaid") // Unpaid | Paid | Failed | Refunded
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

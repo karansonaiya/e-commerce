@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
       <h2>Refund Process</h2>
       <p>
         Approved refunds are processed to the original payment method within 5–7
-        business days. Refunds for Razorpay payments are initiated via the same
+        business days. Refunds for Cashfree payments are initiated via the same
         gateway.
       </p>
       <h2>Cancellations</h2>

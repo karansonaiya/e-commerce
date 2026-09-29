@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,9 +13,16 @@ import { useCartStore } from "@/stores/cart-store";
 import { formatINR } from "@/lib/utils";
 import { addressSchema, type AddressInput } from "@/lib/validations/checkout";
 
+type CashfreeCheckoutOptions = {
+  paymentSessionId: string;
+  redirectTarget: "_self";
+};
+
 declare global {
   interface Window {
-    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
+    Cashfree: (config: { mode: "sandbox" | "production" }) => {
+      checkout: (options: CashfreeCheckoutOptions) => Promise<unknown>;
+    };
   }
 }
 
@@ -24,8 +30,7 @@ const SHIPPING_FEE = 49;
 const FREE_SHIPPING_THRESHOLD = 599;
 
 export function CheckoutForm() {
-  const router = useRouter();
-  const { items, subtotal, clearCart } = useCartStore();
+  const { items, subtotal } = useCartStore();
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponMessage, setCouponMessage] = useState<string | null>(null);
@@ -81,49 +86,25 @@ export function CheckoutForm() {
       const orderData = await orderRes.json();
       if (!orderRes.ok) throw new Error(orderData.error ?? "Could not place order");
 
-      const rpRes = await fetch("/api/razorpay/create-order", {
+      const cfRes = await fetch("/api/cashfree/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderId: orderData.orderId }),
       });
-      const rpData = await rpRes.json();
-      if (!rpRes.ok) throw new Error(rpData.error ?? "Payment gateway error");
+      const cfData = await cfRes.json();
+      if (!cfRes.ok) throw new Error(cfData.error ?? "Payment gateway error");
 
-      if (typeof window.Razorpay === "undefined") {
+      if (typeof window.Cashfree === "undefined") {
         throw new Error("Payment gateway failed to load. Please refresh and try again.");
       }
 
-      const rzp = new window.Razorpay({
-        key: rpData.keyId,
-        amount: rpData.amount,
-        currency: rpData.currency,
-        name: "Westoria",
-        description: "Order Payment",
-        order_id: rpData.razorpayOrderId,
-        prefill: { name: address.fullName, contact: address.phone },
-        theme: { color: "#b5121b" },
-        handler: async (response: {
-          razorpay_order_id: string;
-          razorpay_payment_id: string;
-          razorpay_signature: string;
-        }) => {
-          const verifyRes = await fetch("/api/razorpay/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ orderId: orderData.orderId, ...response }),
-          });
-          if (verifyRes.ok) {
-            clearCart();
-            router.push(`/checkout/success?orderId=${orderData.orderId}`);
-          } else {
-            toast.error("Payment verification failed. Contact support if amount was deducted.");
-          }
-        },
-        modal: {
-          ondismiss: () => setSubmitting(false),
-        },
+      // Cart is cleared on the return page once payment is confirmed server-side —
+      // this navigates the whole tab to Cashfree's hosted checkout.
+      const cashfree = window.Cashfree({ mode: cfData.mode });
+      await cashfree.checkout({
+        paymentSessionId: cfData.paymentSessionId,
+        redirectTarget: "_self",
       });
-      rzp.open();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
       setSubmitting(false);
@@ -132,7 +113,7 @@ export function CheckoutForm() {
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
       <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-3">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 lg:col-span-2">
           <h2 className="font-display text-lg font-semibold">Shipping Address</h2>
@@ -182,7 +163,7 @@ export function CheckoutForm() {
           </div>
 
           <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-            {submitting ? "Processing..." : `Pay ${formatINR(total)} with Razorpay`}
+            {submitting ? "Redirecting to payment..." : `Pay ${formatINR(total)}`}
           </Button>
         </form>
 

@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
       </p>
       <h2>Payment Information</h2>
       <p>
-        Payments are processed securely by Razorpay. Westoria does not store your
+        Payments are processed securely by Cashfree. Westoria does not store your
         card, UPI, or bank details on our servers.
       </p>
       <h2>Cookies</h2>
