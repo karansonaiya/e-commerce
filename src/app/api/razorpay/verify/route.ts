@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
+import { emitEvent } from "@/lib/socket";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Payment verification failed" }, { status: 400 });
   }
 
-  await prisma.$transaction([
+  const [, ...updatedProducts] = await prisma.$transaction([
     prisma.order.update({
       where: { id: order.id },
       data: {
@@ -50,6 +51,12 @@ export async function POST(req: Request) {
       })
     ),
   ]);
+
+  // Someone else viewing this product (or with it in their cart) sees the new
+  // stock instantly instead of finding out only at their own checkout.
+  for (const product of updatedProducts) {
+    emitEvent("product:update", { id: product.id, stock: product.stock });
+  }
 
   return NextResponse.json({ success: true, orderId: order.id });
 }

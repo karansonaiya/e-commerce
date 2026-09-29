@@ -2,10 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Star } from "lucide-react";
 import { ProductGallery } from "@/components/store/product-gallery";
-import { AddToCartForm } from "@/components/store/add-to-cart-form";
+import { ProductLiveSection } from "@/components/store/product-live-section";
 import { ProductCard } from "@/components/store/product-card";
-import { Badge } from "@/components/ui/badge";
-import { formatINR, discountPercent } from "@/lib/utils";
 import { getProductBySlug, getRelatedProducts } from "@/lib/data/products";
 
 export async function generateMetadata({
@@ -36,7 +34,6 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const images = product.images.split(",").map((i) => i.trim());
-  const percent = discountPercent(product.price, product.salePrice);
   const related = await getRelatedProducts(product.categoryId, product.id);
 
   return (
@@ -55,19 +52,15 @@ export default async function ProductPage({
             {product.rating.toFixed(1)} ({product.reviewCount} reviews)
           </div>
 
-          <div className="mt-4 flex items-center gap-3">
-            {product.salePrice ? (
-              <>
-                <span className="font-display text-3xl font-semibold">{formatINR(product.salePrice)}</span>
-                <span className="text-lg text-[var(--color-ink-soft)]/60 line-through">
-                  {formatINR(product.price)}
-                </span>
-                {percent > 0 && <Badge>-{percent}%</Badge>}
-              </>
-            ) : (
-              <span className="font-display text-3xl font-semibold">{formatINR(product.price)}</span>
-            )}
-          </div>
+          <ProductLiveSection
+            productId={product.id}
+            name={product.name}
+            slug={product.slug}
+            image={images[0]}
+            initialPrice={product.price}
+            initialSalePrice={product.salePrice}
+            initialStock={product.stock}
+          />
 
           {product.shortTagline && (
             <p className="mt-3 text-[var(--color-ink-soft)]">{product.shortTagline}</p>
@@ -79,26 +72,6 @@ export default async function ProductPage({
               {product.scentNotes}
             </p>
           )}
-
-          <p className="mt-2 text-sm">
-            {product.stock > 0 ? (
-              <span className="text-emerald-700">In Stock ({product.stock} available)</span>
-            ) : (
-              <span className="text-red-600">Out of Stock</span>
-            )}
-          </p>
-
-          <div className="mt-6">
-            <AddToCartForm
-              productId={product.id}
-              name={product.name}
-              slug={product.slug}
-              image={images[0]}
-              price={product.price}
-              salePrice={product.salePrice}
-              stock={product.stock}
-            />
-          </div>
 
           <div className="mt-8 space-y-4 border-t border-[var(--color-ink)]/10 pt-6">
             <div>

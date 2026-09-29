@@ -8,12 +8,18 @@ import { Button } from "@/components/ui/button";
 import { formatINR, discountPercent, cn } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart-store";
 import { useWishlistStore } from "@/stores/wishlist-store";
+import { useProductLive } from "@/hooks/use-product-live";
 import type { ProductCard as ProductCardType } from "@/types";
 import { toast } from "sonner";
 
 export function ProductCard({ product }: { product: ProductCardType }) {
   const image = product.images.split(",")[0]?.trim();
-  const percent = discountPercent(product.price, product.salePrice);
+  const live = useProductLive(product.id, {
+    stock: product.stock,
+    price: product.price,
+    salePrice: product.salePrice,
+  });
+  const percent = discountPercent(live.price, live.salePrice);
   const addItem = useCartStore((s) => s.addItem);
   const { has, toggle } = useWishlistStore();
   const wished = has(product.id);
@@ -65,15 +71,15 @@ export function ProductCard({ product }: { product: ProductCardType }) {
         </div>
 
         <div className="mt-2 flex items-center gap-2">
-          {product.salePrice ? (
+          {live.salePrice ? (
             <>
-              <span className="font-semibold">{formatINR(product.salePrice)}</span>
+              <span className="font-semibold">{formatINR(live.salePrice)}</span>
               <span className="text-sm text-[var(--color-ink-soft)]/60 line-through">
-                {formatINR(product.price)}
+                {formatINR(live.price)}
               </span>
             </>
           ) : (
-            <span className="font-semibold">{formatINR(product.price)}</span>
+            <span className="font-semibold">{formatINR(live.price)}</span>
           )}
         </div>
 
@@ -81,22 +87,22 @@ export function ProductCard({ product }: { product: ProductCardType }) {
           size="sm"
           variant="outline"
           className="mt-3 w-full"
-          disabled={product.stock === 0}
+          disabled={live.stock === 0}
           onClick={() => {
             addItem({
               productId: product.id,
               name: product.name,
               slug: product.slug,
               image: image ?? "",
-              price: product.price,
-              salePrice: product.salePrice,
+              price: live.price,
+              salePrice: live.salePrice,
               quantity: 1,
-              stock: product.stock,
+              stock: live.stock,
             });
             toast.success(`${product.name} added to bag`);
           }}
         >
-          {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+          {live.stock === 0 ? "Out of Stock" : "Add to Cart"}
         </Button>
       </div>
     </div>

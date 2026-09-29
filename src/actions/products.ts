@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { productSchema } from "@/lib/validations/product";
 import { slugify } from "@/lib/utils";
+import { emitEvent } from "@/lib/socket";
 
 function parseProductForm(formData: FormData) {
   return productSchema.parse({
@@ -41,7 +42,14 @@ export async function updateProduct(id: string, formData: FormData) {
   await requireAdmin();
   const data = parseProductForm(formData);
 
-  await prisma.product.update({ where: { id }, data });
+  const updated = await prisma.product.update({ where: { id }, data });
+
+  emitEvent("product:update", {
+    id: updated.id,
+    stock: updated.stock,
+    price: updated.price,
+    salePrice: updated.salePrice,
+  });
 
   revalidatePath("/admin/products");
   revalidatePath("/collections/all");
@@ -52,5 +60,6 @@ export async function updateProduct(id: string, formData: FormData) {
 export async function deleteProduct(id: string) {
   await requireAdmin();
   await prisma.product.delete({ where: { id } });
+  emitEvent("product:delete", { id });
   revalidatePath("/admin/products");
 }
