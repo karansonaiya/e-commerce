@@ -32,32 +32,32 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Your cart is empty" }, { status: 400 });
   }
 
-  const products = await prisma.product.findMany({
-    where: { id: { in: items.map((i) => i.productId) } },
-  });
-
-  let subtotal = 0;
-  const orderItemsData = items.map((cartItem) => {
-    const product = products.find((p) => p.id === cartItem.productId);
-    if (!product) throw new Error("Product not found");
-    if (product.stock < cartItem.quantity) {
-      throw new Error(`${product.name} is out of stock`);
-    }
-    const unitPrice = product.salePrice ?? product.price;
-    subtotal += unitPrice * cartItem.quantity;
-    return {
-      productId: product.id,
-      name: product.name,
-      image: product.images.split(",")[0]?.trim(),
-      price: unitPrice,
-      quantity: cartItem.quantity,
-    };
-  });
-
-  const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  const total = Math.max(0, subtotal - discount) + shippingFee;
-
   try {
+    const products = await prisma.product.findMany({
+      where: { id: { in: items.map((i) => i.productId) } },
+    });
+
+    let subtotal = 0;
+    const orderItemsData = items.map((cartItem) => {
+      const product = products.find((p) => p.id === cartItem.productId);
+      if (!product) throw new Error("One of the items in your cart no longer exists");
+      if (product.stock < cartItem.quantity) {
+        throw new Error(`${product.name} is out of stock`);
+      }
+      const unitPrice = product.salePrice ?? product.price;
+      subtotal += unitPrice * cartItem.quantity;
+      return {
+        productId: product.id,
+        name: product.name,
+        image: product.images.split(",")[0]?.trim(),
+        price: unitPrice,
+        quantity: cartItem.quantity,
+      };
+    });
+
+    const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    const total = Math.max(0, subtotal - discount) + shippingFee;
+
     const savedAddress = await prisma.address.create({
       data: { ...parsedAddress.data, userId: session.user.id },
     });
