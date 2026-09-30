@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Reveal } from "@/components/ui/reveal";
 
 const COLLECTIONS = [
-  { name: "Face Wash", slug: "face-wash", image: "/images/category-face-wash.svg", desc: "Foaming cleansers, from ₹399" },
-  { name: "Serum", slug: "serum", image: "/images/category-serum.svg", desc: "Targeted actives, from ₹499" },
-  { name: "Shampoo", slug: "shampoo", image: "/images/category-shampoo.svg", desc: "Sulphate-free care, from ₹349" },
+  { name: "Face Wash", slug: "face-wash", image: "/images/hero-sunscreen.png", desc: "Foaming cleansers, from ₹399" },
+  { name: "Serum", slug: "serum", image: "/images/hero-vitamin-c-serum.png", desc: "Targeted actives, from ₹499" },
+  { name: "Shampoo", slug: "shampoo", image: "/images/hero-anti-hairfall-shampoo.png", desc: "Sulphate-free care, from ₹349" },
 ];
 
 export function CollectionsGrid() {
@@ -20,19 +20,21 @@ export function CollectionsGrid() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {COLLECTIONS.map((c, i) => (
           <Reveal key={c.slug} variant="zoom" delay={i * 0.1}>
-            <Link href={`/collections/${c.slug}`} className="group relative block overflow-hidden rounded-2xl">
-              <div className="relative aspect-[4/5]">
+            <Link
+              href={`/collections/${c.slug}`}
+              className="group block overflow-hidden rounded-2xl border border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)] transition hover:border-[var(--color-brand)]/30"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden bg-white">
                 <Image
                   src={c.image}
                   alt={c.name}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-8 transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </div>
-              <div className="absolute bottom-0 left-0 p-6 text-white">
-                <h3 className="font-display text-2xl font-semibold">{c.name}</h3>
-                <p className="mt-1 text-sm text-white/85">{c.desc}</p>
+              <div className="p-6">
+                <h3 className="font-display text-2xl font-semibold text-[var(--color-ink)]">{c.name}</h3>
+                <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{c.desc}</p>
               </div>
             </Link>
           </Reveal>

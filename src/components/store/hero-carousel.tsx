@@ -6,28 +6,35 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const SLIDES = [
   {
-    image: "/images/hero-1.svg",
-    title: "Radiance Starts Here",
-    subtitle: "Premium face wash for glowing, healthy skin",
-    href: "/collections/face-wash",
-    cta: "Shop Face Wash",
+    image: "/images/hero-sunscreen.png",
+    title: "Sun Protection, Perfected",
+    subtitle: "Broad-spectrum SPF 50 PA+++ sunscreen — hydrating, lightweight & non-greasy for everyday wear.",
+    href: "/collections/all",
+    cta: "Shop Now",
+    contentSide: "left" as const,
+    tint: "from-orange-50 via-amber-50",
   },
   {
-    image: "/images/hero-2.svg",
-    title: "Serums That Work",
-    subtitle: "Clinically-inspired formulas for visible results",
-    href: "/collections/serum",
-    cta: "Shop Serum",
-  },
-  {
-    image: "/images/hero-3.svg",
-    title: "Hair, Reimagined",
-    subtitle: "Shampoos crafted for strength & shine",
+    image: "/images/hero-anti-hairfall-shampoo.png",
+    title: "Up to 99% Less Hair Fall",
+    subtitle: "Anti-hairfall shampoo enriched with Biotin, Caffeine & Onion Extract — strengthens, nourishes, protects.",
     href: "/collections/shampoo",
     cta: "Shop Shampoo",
+    contentSide: "right" as const,
+    tint: "from-yellow-50 via-amber-50",
+  },
+  {
+    image: "/images/hero-vitamin-c-serum.png",
+    title: "10% Vitamin C Radiance",
+    subtitle: "Brightens skin tone, fades dark spots & boosts hydration with niacinamide-powered actives.",
+    href: "/collections/serum",
+    cta: "Shop Serum",
+    contentSide: "left" as const,
+    tint: "from-rose-50 via-pink-50",
   },
 ];
 
@@ -40,45 +47,68 @@ export function HeroCarousel() {
   }, []);
 
   const slide = SLIDES[index];
+  const isRight = slide.contentSide === "right";
 
   return (
-    <section className="relative h-[70vh] min-h-[420px] w-full overflow-hidden">
+    <section className="relative h-[70vh] min-h-[480px] w-full overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          className="absolute inset-0"
+          transition={{ duration: 0.5 }}
+          className={cn(
+            "absolute inset-0 bg-gradient-to-br to-[var(--color-cream)]",
+            slide.tint
+          )}
         >
-          <Image src={slide.image} alt={slide.title} fill priority className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
+          <div
+            className={cn(
+              "container-x flex h-full flex-col items-center justify-center gap-8 py-10 md:flex-row md:gap-12",
+              isRight && "md:flex-row-reverse"
+            )}
+          >
+            <motion.div
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className={cn(
+                "max-w-lg flex-1 text-center md:text-left",
+                isRight && "md:text-right"
+              )}
+            >
+              <h1 className="font-display text-3xl font-semibold leading-tight text-[var(--color-ink)] sm:text-4xl md:text-5xl">
+                {slide.title}
+              </h1>
+              <p className="mt-4 text-base text-[var(--color-ink-soft)] sm:text-lg">{slide.subtitle}</p>
+              <Button asChild size="lg" className="mt-8">
+                <Link href={slide.href}>{slide.cta}</Link>
+              </Button>
+            </motion.div>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="relative aspect-square w-56 shrink-0 sm:w-72 md:w-80"
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority
+                className="object-contain drop-shadow-xl"
+              />
+            </motion.div>
+          </div>
         </motion.div>
       </AnimatePresence>
-
-      <div className="container-x relative flex h-full flex-col items-start justify-center">
-        <motion.div
-          key={`text-${index}`}
-          initial={{ y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="max-w-xl text-white"
-        >
-          <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl">
-            {slide.title}
-          </h1>
-          <p className="mt-4 text-base text-white/90 sm:text-lg">{slide.subtitle}</p>
-          <Button asChild size="lg" className="mt-8">
-            <Link href={slide.href}>{slide.cta}</Link>
-          </Button>
-        </motion.div>
-      </div>
 
       <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-4">
         <button
           onClick={() => setIndex((i) => (i - 1 + SLIDES.length) % SLIDES.length)}
-          className="flex size-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur hover:bg-white/30"
+          className="flex size-9 items-center justify-center rounded-full bg-[var(--color-ink)]/10 text-[var(--color-ink)] backdrop-blur hover:bg-[var(--color-ink)]/20"
           aria-label="Previous slide"
         >
           <ChevronLeft className="size-4" />
@@ -90,14 +120,14 @@ export function HeroCarousel() {
               onClick={() => setIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={`h-1.5 rounded-full transition-all ${
-                i === index ? "w-8 bg-white" : "w-3 bg-white/40"
+                i === index ? "w-8 bg-[var(--color-brand)]" : "w-3 bg-[var(--color-ink)]/20"
               }`}
             />
           ))}
         </div>
         <button
           onClick={() => setIndex((i) => (i + 1) % SLIDES.length)}
-          className="flex size-9 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur hover:bg-white/30"
+          className="flex size-9 items-center justify-center rounded-full bg-[var(--color-ink)]/10 text-[var(--color-ink)] backdrop-blur hover:bg-[var(--color-ink)]/20"
           aria-label="Next slide"
         >
           <ChevronRight className="size-4" />
