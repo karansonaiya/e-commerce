@@ -25,7 +25,12 @@ export default async function AccountPage() {
       month: "short",
       year: "numeric",
     }),
-    items: order.items.map((item) => ({ id: item.id, name: item.name, quantity: item.quantity })),
+    items: order.items.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      image: item.image,
+    })),
   }));
 
   return (

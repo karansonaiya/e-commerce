@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { auth } from "@/lib/auth";
@@ -68,10 +69,24 @@ export default async function AccountOrderDetailPage({
             <h2 className="font-display font-semibold">Items</h2>
             <ul className="mt-3 divide-y divide-[var(--color-ink)]/5">
               {order.items.map((item) => (
-                <li key={item.id} className="flex justify-between py-2.5 text-sm">
-                  <span className="text-[var(--color-ink-soft)]">
-                    {item.name} × {item.quantity}
-                  </span>
+                <li key={item.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)]">
+                      {item.image && (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={48}
+                          height={48}
+                          className="size-full object-cover"
+                          unoptimized
+                        />
+                      )}
+                    </div>
+                    <span className="text-[var(--color-ink-soft)]">
+                      {item.name} × {item.quantity}
+                    </span>
+                  </div>
                   <span className="font-medium">{formatINR(item.price * item.quantity)}</span>
                 </li>
               ))}

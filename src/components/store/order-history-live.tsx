@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { formatINR } from "@/lib/utils";
 import { subscribeRealtime } from "@/lib/realtime-client";
@@ -19,7 +20,7 @@ export type OrderRow = {
   status: string;
   total: number;
   createdAtLabel: string;
-  items: { id: string; name: string; quantity: number }[];
+  items: { id: string; name: string; quantity: number; image: string | null }[];
 };
 
 export function OrderHistoryLive({ userId, initialOrders }: { userId: string; initialOrders: OrderRow[] }) {
@@ -64,10 +65,24 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
             </div>
             <Badge variant={STATUS_VARIANT[order.status] ?? "soft"}>{order.status}</Badge>
           </div>
-          <ul className="mt-3 space-y-1 text-sm text-[var(--color-ink-soft)]">
+          <ul className="mt-3 space-y-2">
             {order.items.map((item) => (
-              <li key={item.id}>
-                {item.name} × {item.quantity}
+              <li key={item.id} className="flex items-center gap-3 text-sm text-[var(--color-ink-soft)]">
+                <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)]">
+                  {item.image && (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={48}
+                      height={48}
+                      className="size-full object-cover"
+                      unoptimized
+                    />
+                  )}
+                </div>
+                <span>
+                  {item.name} × {item.quantity}
+                </span>
               </li>
             ))}
           </ul>
