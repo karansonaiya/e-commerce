@@ -33,7 +33,7 @@ export default function RefundPolicyPage() {
         please refer to our return process above.
       </p>
       <h2>Contact Us</h2>
-      <p>Reach out at support@westoria.in for any refund or return request.</p>
+      <p>Reach out at westoriastore@gmail.com for any refund or return request.</p>
     </LegalPage>
   );
 }

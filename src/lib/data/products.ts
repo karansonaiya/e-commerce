@@ -73,6 +73,14 @@ export async function getRelatedProducts(categoryId: string, excludeId: string, 
   });
 }
 
+export async function getProductsByIds(ids: string[]) {
+  if (ids.length === 0) return [];
+  return prisma.product.findMany({
+    where: { id: { in: ids } },
+    select: cardSelect,
+  });
+}
+
 export async function searchProducts(query: string) {
   if (!query.trim()) return [];
   return prisma.product.findMany({

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Leaf, ShieldCheck, Sparkles } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -7,9 +6,10 @@ export const metadata = { title: "About Us" };
 export default function AboutPage() {
   return (
     <div>
-      <section className="relative h-72 w-full overflow-hidden sm:h-96">
-        <Image src="/images/hero-1.svg" alt="About Westoria" fill className="object-cover" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-center text-white">
+      <section className="relative h-72 w-full overflow-hidden bg-[var(--color-ink)] sm:h-96">
+        <div className="absolute -right-20 -top-20 size-80 rounded-full bg-[var(--color-brand)]/25 blur-3xl" />
+        <div className="absolute -bottom-24 -left-16 size-80 rounded-full bg-white/[0.06] blur-3xl" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white">
           <h1 className="font-display text-4xl font-semibold sm:text-5xl">Our Story</h1>
           <p className="mt-2 max-w-lg px-4 text-white/85">
             Building premium, honest skincare and haircare for modern India.

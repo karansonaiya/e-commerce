@@ -27,7 +27,7 @@ export function OrderTimeline({ status }: { status: string }) {
                 className={cn(
                   "flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-semibold",
                   done
-                    ? "border-[var(--color-brand)] bg-[var(--color-brand)] text-white"
+                    ? "border-[var(--color-brand)] bg-[var(--color-brand)] text-[var(--color-ink)]"
                     : "border-[var(--color-ink)]/20 text-[var(--color-ink-soft)]/50"
                 )}
               >

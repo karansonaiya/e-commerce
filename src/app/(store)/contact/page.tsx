@@ -16,9 +16,9 @@ export default function ContactPage() {
 
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">
-          <ContactInfo icon={Mail} title="Email" value="support@westoria.in" />
-          <ContactInfo icon={Phone} title="Phone" value="+91 98765 43210" />
-          <ContactInfo icon={MapPin} title="Address" value="Westoria HQ, Mumbai, Maharashtra, India" />
+          <ContactInfo icon={Mail} title="Email" value="westoriastore@gmail.com" />
+          <ContactInfo icon={Phone} title="Phone" value="+91 8780656181" />
+          <ContactInfo icon={MapPin} title="Address" value="Surat, Gujarat India" />
         </div>
         <div className="lg:col-span-2">
           <ContactForm />

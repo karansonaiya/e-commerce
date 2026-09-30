@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
 import { useCartStore } from "@/stores/cart-store";
+import { useWishlistStore } from "@/stores/wishlist-store";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -23,6 +24,7 @@ export function Header() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { totalItems, openCart } = useCartStore();
+  const wishlistCount = useWishlistStore((s) => s.productIds.length);
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -162,10 +164,19 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          <Link href="/wishlist" aria-label="Wishlist" className="relative p-2">
+            <Heart className="size-5" />
+            {mounted && wishlistCount > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex size-4.5 items-center justify-center rounded-full bg-[var(--color-brand)] text-[10px] font-semibold text-[var(--color-ink)]">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
+
           <button aria-label="Open cart" className="relative p-2" onClick={openCart}>
             <ShoppingBag className="size-5" />
             {mounted && totalItems() > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4.5 items-center justify-center rounded-full bg-[var(--color-brand)] text-[10px] font-semibold text-white">
+              <span className="absolute -right-0.5 -top-0.5 flex size-4.5 items-center justify-center rounded-full bg-[var(--color-brand)] text-[10px] font-semibold text-[var(--color-ink)]">
                 {totalItems()}
               </span>
             )}

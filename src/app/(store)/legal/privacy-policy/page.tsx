@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
       <h2>Your Rights</h2>
       <p>
         You may request access to, correction of, or deletion of your personal data
-        by contacting us at support@westoria.in.
+        by contacting us at westoriastore@gmail.com.
       </p>
     </LegalPage>
   );
