@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Leaf, ShieldCheck, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata = { title: "About Us" };
 
@@ -17,7 +18,7 @@ export default function AboutPage() {
       </section>
 
       <section className="container-x py-16">
-        <div className="mx-auto max-w-3xl space-y-6 text-[var(--color-ink-soft)]">
+        <Reveal className="mx-auto max-w-3xl space-y-6 text-[var(--color-ink-soft)]">
           <p>
             Westoria was founded on a simple belief: everyday self-care rituals deserve
             premium formulations without the premium confusion. We started with three
@@ -34,21 +35,21 @@ export default function AboutPage() {
             Today, thousands of customers trust Westoria as part of their daily
             routine. We&apos;re just getting started.
           </p>
-        </div>
+        </Reveal>
 
         <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-8 sm:grid-cols-3">
           {[
             { icon: Sparkles, title: "Premium Formulas", desc: "Clinically-inspired, effective ingredients." },
             { icon: ShieldCheck, title: "Dermat Tested", desc: "Safe for all skin & hair types." },
             { icon: Leaf, title: "Cruelty Free", desc: "Never tested on animals." },
-          ].map((item) => (
-            <div key={item.title} className="text-center">
+          ].map((item, i) => (
+            <Reveal key={item.title} delay={i * 0.1} className="text-center">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
                 <item.icon className="size-5" />
               </div>
               <h3 className="mt-3 font-display font-semibold">{item.title}</h3>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{item.desc}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>

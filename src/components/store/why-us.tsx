@@ -1,4 +1,5 @@
 import { Leaf, ShieldCheck, Sparkles, Truck } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 
 const POINTS = [
   {
@@ -27,23 +28,23 @@ export function WhyUs() {
   return (
     <section className="bg-[var(--color-cream-dark)] py-16 md:py-24">
       <div className="container-x">
-        <div className="mb-12 text-center">
+        <Reveal className="mb-12 text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
             Why Westoria?
           </p>
           <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
             Crafted for real results
           </h2>
-        </div>
+        </Reveal>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {POINTS.map((p) => (
-            <div key={p.title} className="text-center">
+          {POINTS.map((p, i) => (
+            <Reveal key={p.title} delay={i * 0.1} className="text-center">
               <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
                 <p.icon className="size-6" />
               </div>
               <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
               <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{p.desc}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

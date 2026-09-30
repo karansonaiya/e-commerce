@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 
 const REVIEWS = [
   {
@@ -24,15 +25,15 @@ const REVIEWS = [
 export function ReviewsSection() {
   return (
     <section className="container-x py-16 md:py-24">
-      <div className="mb-12 text-center">
+      <Reveal className="mb-12 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
           Real people, real reviews
         </p>
         <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">Loved by thousands</h2>
-      </div>
+      </Reveal>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        {REVIEWS.map((r) => (
-          <div key={r.name} className="rounded-2xl border border-[var(--color-ink)]/10 bg-white p-6">
+        {REVIEWS.map((r, idx) => (
+          <Reveal key={r.name} delay={idx * 0.1} className="rounded-2xl border border-[var(--color-ink)]/10 bg-white p-6">
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
@@ -46,7 +47,7 @@ export function ReviewsSection() {
             <p className="mt-4 text-sm text-[var(--color-ink-soft)]">&ldquo;{r.text}&rdquo;</p>
             <p className="mt-4 text-sm font-semibold">{r.name}</p>
             <p className="text-xs text-[var(--color-ink-soft)]/70">on {r.product}</p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

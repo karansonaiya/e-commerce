@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 
 export function CtaBanner() {
   return (
     <section className="container-x py-16">
-      <div className="relative overflow-hidden rounded-2xl">
+      <Reveal variant="zoom" className="relative overflow-hidden rounded-2xl">
         <div className="relative h-72 sm:h-80">
           <Image src="/images/hero-2.svg" alt="Limited time offer" fill className="object-cover" />
           <div className="absolute inset-0 bg-black/45" />
@@ -20,7 +21,7 @@ export function CtaBanner() {
             <Link href="/collections/all">Shop the Sale</Link>
           </Button>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

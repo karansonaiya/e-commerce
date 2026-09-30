@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 import { ProductGallery } from "@/components/store/product-gallery";
 import { ProductLiveSection } from "@/components/store/product-live-section";
 import { ProductCard } from "@/components/store/product-card";
+import { Reveal } from "@/components/ui/reveal";
 import { getProductBySlug, getRelatedProducts } from "@/lib/data/products";
 
 export async function generateMetadata({
@@ -94,10 +95,12 @@ export default async function ProductPage({
 
       {product.reviews.length > 0 && (
         <div className="mt-16 border-t border-[var(--color-ink)]/10 pt-10">
-          <h2 className="font-display text-2xl font-semibold">Customer Reviews</h2>
+          <Reveal>
+            <h2 className="font-display text-2xl font-semibold">Customer Reviews</h2>
+          </Reveal>
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            {product.reviews.map((r) => (
-              <div key={r.id} className="rounded-xl border border-[var(--color-ink)]/10 p-5">
+            {product.reviews.map((r, idx) => (
+              <Reveal key={r.id} delay={idx * 0.08} className="rounded-xl border border-[var(--color-ink)]/10 p-5">
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
@@ -110,7 +113,7 @@ export default async function ProductPage({
                 </div>
                 {r.comment && <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{r.comment}</p>}
                 <p className="mt-2 text-sm font-medium">{r.user.name ?? "Verified Buyer"}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -118,10 +121,14 @@ export default async function ProductPage({
 
       {related.length > 0 && (
         <div className="mt-16 border-t border-[var(--color-ink)]/10 pt-10">
-          <h2 className="font-display text-2xl font-semibold">You May Also Like</h2>
+          <Reveal>
+            <h2 className="font-display text-2xl font-semibold">You May Also Like</h2>
+          </Reveal>
           <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {related.map((p, i) => (
+              <Reveal key={p.id} variant="zoom" delay={i * 0.08}>
+                <ProductCard product={p} />
+              </Reveal>
             ))}
           </div>
         </div>
