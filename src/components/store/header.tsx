@@ -99,7 +99,6 @@ export function Header() {
               <form
                 action="/search"
                 className="flex items-center gap-1 rounded-full border border-[var(--color-ink)]/15 bg-white px-3"
-                onSubmit={() => setSearchOpen(false)}
               >
                 <input
                   autoFocus
