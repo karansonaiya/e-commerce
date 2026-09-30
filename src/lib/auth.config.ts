@@ -7,6 +7,12 @@ import { isAdminEmail } from "@/lib/admin";
 export const authConfig: NextAuthConfig = {
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
+  // Build redirect/callback URLs from the actual incoming request's host
+  // instead of the static AUTH_URL/NEXTAUTH_URL env var — without this,
+  // running on any port/host other than the one baked into that env var
+  // (e.g. a different local port, or a Vercel preview deployment URL)
+  // produces redirects pointing at the wrong host.
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
