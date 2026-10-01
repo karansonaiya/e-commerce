@@ -1,5 +1,6 @@
 import { Leaf, ShieldCheck, Sparkles } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 export const metadata = { title: "About Us" };
 
@@ -10,7 +11,9 @@ export default function AboutPage() {
         <div className="absolute -right-20 -top-20 size-80 rounded-full bg-[var(--color-brand)]/25 blur-3xl" />
         <div className="absolute -bottom-24 -left-16 size-80 rounded-full bg-white/[0.06] blur-3xl" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white">
-          <h1 className="font-display text-4xl font-semibold sm:text-5xl">Our Story</h1>
+          <h1 className="font-display text-4xl font-semibold sm:text-5xl">
+            <TextReveal text="Our Story" />
+          </h1>
           <p className="mt-2 max-w-lg px-4 text-white/85">
             Building premium, honest skincare and haircare for modern India.
           </p>
@@ -43,13 +46,15 @@ export default function AboutPage() {
             { icon: ShieldCheck, title: "Dermat Tested", desc: "Safe for all skin & hair types." },
             { icon: Leaf, title: "Cruelty Free", desc: "Never tested on animals." },
           ].map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.1} className="text-center">
-              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
-                <item.icon className="size-5" />
-              </div>
+            <div key={item.title} className="group text-center">
+              <Reveal variant="pop" delay={i * 0.1}>
+                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)]">
+                  <item.icon className="size-5" />
+                </div>
+              </Reveal>
               <h3 className="mt-3 font-display font-semibold">{item.title}</h3>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{item.desc}</p>
-            </Reveal>
+            </div>
           ))}
         </div>
       </section>

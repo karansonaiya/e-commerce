@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Heart, Plus, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatINR, discountPercent, cn } from "@/lib/utils";
@@ -25,15 +25,16 @@ export function ProductCard({ product }: { product: ProductCardType }) {
   const wished = has(product.id);
 
   return (
-    <div className="group relative">
+    <div className="group relative transition-transform duration-500 ease-out hover:-translate-y-1">
       <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[var(--color-cream-dark)]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[var(--color-cream-dark)] shadow-sm transition-shadow duration-500 group-hover:shadow-xl group-hover:shadow-black/10">
           <Image
             src={image}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/0 via-black/0 to-black/0 opacity-0 transition-opacity duration-500 group-hover:from-black/25 group-hover:opacity-100" />
           {percent > 0 && (
             <Badge className="absolute left-3 top-3">-{percent}%</Badge>
           )}
@@ -43,9 +44,38 @@ export function ProductCard({ product }: { product: ProductCardType }) {
               toggle(product.id);
             }}
             aria-label="Toggle wishlist"
-            className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/90 transition hover:bg-white"
+            className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/90 transition-all duration-300 hover:scale-110 hover:bg-white active:scale-90"
           >
-            <Heart className={cn("size-4", wished && "fill-[var(--color-brand)] text-[var(--color-brand)]")} />
+            <Heart
+              className={cn(
+                "size-4 transition-transform",
+                wished && "fill-[var(--color-brand)] text-[var(--color-brand)] scale-110"
+              )}
+            />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (live.stock === 0) return;
+              addItem({
+                productId: product.id,
+                name: product.name,
+                slug: product.slug,
+                image: image ?? "",
+                price: live.price,
+                salePrice: live.salePrice,
+                quantity: 1,
+                stock: live.stock,
+              });
+              toast.success(`${product.name} added to bag`);
+            }}
+            disabled={live.stock === 0}
+            aria-label="Quick add to cart"
+            className="absolute inset-x-3 bottom-3 flex translate-y-4 items-center justify-center gap-1.5 rounded-full bg-white/95 py-2.5 text-xs font-semibold text-[var(--color-ink)] opacity-0 shadow-lg transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-0"
+          >
+            <Plus className="size-3.5" />
+            {live.stock === 0 ? "Out of Stock" : "Quick Add"}
           </button>
         </div>
       </Link>

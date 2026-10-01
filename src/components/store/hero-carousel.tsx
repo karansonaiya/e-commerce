@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TextReveal } from "@/components/ui/text-reveal";
 import { cn } from "@/lib/utils";
 
 const SLIDES = [
@@ -74,9 +75,9 @@ export function HeroCarousel() {
             )}
           >
             <motion.div
-              initial={{ y: 24, opacity: 0 }}
+              initial={{ y: 16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className={cn(
                 "max-w-xl flex-1 text-center md:text-left",
                 isRight && "md:text-right"
@@ -86,7 +87,7 @@ export function HeroCarousel() {
                 {slide.tag}
               </p>
               <h1 className="font-display mt-3 text-4xl font-semibold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl">
-                {slide.title}
+                <TextReveal key={slide.title} text={slide.title} delay={0.2} />
               </h1>
               <div
                 className={cn(
@@ -94,18 +95,36 @@ export function HeroCarousel() {
                   isRight && "md:justify-end"
                 )}
               >
-                <span className="h-px w-10 bg-white/40" />
-                <p className="max-w-md text-sm text-white/70 sm:text-base">{slide.subtitle}</p>
+                <motion.span
+                  className="h-px bg-white/40"
+                  initial={{ width: 0 }}
+                  animate={{ width: 40 }}
+                  transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                />
+                <motion.p
+                  className="max-w-md text-sm text-white/70 sm:text-base"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.55 }}
+                >
+                  {slide.subtitle}
+                </motion.p>
               </div>
-              <Button asChild size="lg" className="mt-9">
-                <Link href={slide.href}>{slide.cta}</Link>
-              </Button>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                <Button asChild size="lg" className="mt-9">
+                  <Link href={slide.href}>{slide.cta}</Link>
+                </Button>
+              </motion.div>
             </motion.div>
 
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ scale: 0.82, opacity: 0, rotate: -3 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="relative flex flex-1 items-center justify-center"
             >
               <div
@@ -114,7 +133,11 @@ export function HeroCarousel() {
                   slide.glow
                 )}
               />
-              <div className="relative aspect-square w-64 shrink-0 sm:w-80 md:w-96">
+              <motion.div
+                className="relative aspect-square w-64 shrink-0 sm:w-80 md:w-96"
+                animate={{ y: [0, -14, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+              >
                 <Image
                   src={slide.image}
                   alt={slide.title}
@@ -122,7 +145,7 @@ export function HeroCarousel() {
                   priority
                   className="object-contain drop-shadow-2xl"
                 />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </motion.div>
@@ -131,7 +154,7 @@ export function HeroCarousel() {
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-4">
         <button
           onClick={() => setIndex((i) => (i - 1 + SLIDES.length) % SLIDES.length)}
-          className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+          className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-all duration-300 hover:scale-110 hover:bg-white/20 active:scale-95"
           aria-label="Previous slide"
         >
           <ChevronLeft className="size-4" />
@@ -142,15 +165,15 @@ export function HeroCarousel() {
               key={i}
               onClick={() => setIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all ${
-                i === index ? "w-8 bg-[var(--color-brand)]" : "w-3 bg-white/25"
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === index ? "w-8 bg-[var(--color-brand)]" : "w-3 bg-white/25 hover:bg-white/50"
               }`}
             />
           ))}
         </div>
         <button
           onClick={() => setIndex((i) => (i + 1) % SLIDES.length)}
-          className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+          className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-all duration-300 hover:scale-110 hover:bg-white/20 active:scale-95"
           aria-label="Next slide"
         >
           <ChevronRight className="size-4" />

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ProductCard } from "@/components/store/product-card";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 import { getProductsByCategorySlug } from "@/lib/data/products";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { CATEGORY_SLUGS } from "@/lib/constants";
@@ -48,7 +49,9 @@ export default async function CollectionPage({
     <div className="container-x py-12">
       <Reveal className="mb-10 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">Collection</p>
-        <h1 className="font-display mt-2 text-4xl font-semibold">{title}</h1>
+        <h1 className="font-display mt-2 text-4xl font-semibold">
+          <TextReveal text={title} />
+        </h1>
         {category?.description && (
           <p className="mx-auto mt-3 max-w-2xl text-[var(--color-ink-soft)]">{category.description}</p>
         )}

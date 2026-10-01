@@ -1,5 +1,6 @@
 import { Leaf, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 const POINTS = [
   {
@@ -33,18 +34,22 @@ export function WhyUs() {
             Why Westoria?
           </p>
           <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
-            Crafted for real results
+            <TextReveal text="Crafted for real results" />
           </h2>
         </Reveal>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {POINTS.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.1} className="text-center">
-              <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
-                <p.icon className="size-6" />
-              </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
-              <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{p.desc}</p>
-            </Reveal>
+            <div key={p.title} className="group text-center">
+              <Reveal variant="pop" delay={i * 0.1}>
+                <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)] group-hover:shadow-lg group-hover:shadow-[var(--color-brand)]/30">
+                  <p.icon className="size-6" />
+                </div>
+              </Reveal>
+              <Reveal delay={i * 0.1 + 0.1}>
+                <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{p.desc}</p>
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>

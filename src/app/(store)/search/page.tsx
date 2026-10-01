@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/store/product-card";
+import { Reveal } from "@/components/ui/reveal";
 import { searchProducts } from "@/lib/data/products";
 
 export const metadata = { title: "Search" };
@@ -13,10 +14,12 @@ export default async function SearchPage({
 
   return (
     <div className="container-x py-12">
-      <h1 className="font-display text-3xl font-semibold">
-        {q ? `Search results for "${q}"` : "Search"}
-      </h1>
-      <p className="mt-2 text-sm text-[var(--color-ink-soft)]/70">{results.length} products found</p>
+      <Reveal>
+        <h1 className="font-display text-3xl font-semibold">
+          {q ? `Search results for "${q}"` : "Search"}
+        </h1>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]/70">{results.length} products found</p>
+      </Reveal>
 
       {results.length === 0 ? (
         <p className="py-16 text-center text-[var(--color-ink-soft)]">
@@ -24,8 +27,10 @@ export default async function SearchPage({
         </p>
       ) : (
         <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-          {results.map((p) => (
-            <ProductCard key={p.id} product={p} />
+          {results.map((p, i) => (
+            <Reveal key={p.id} variant="zoom" delay={(i % 4) * 0.08}>
+              <ProductCard product={p} />
+            </Reveal>
           ))}
         </div>
       )}

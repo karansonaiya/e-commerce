@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Reveal } from "@/components/ui/reveal";
 import { useCartStore } from "@/stores/cart-store";
 import { formatINR } from "@/lib/utils";
 import { addressSchema, type AddressInput } from "@/lib/validations/checkout";
@@ -115,7 +116,8 @@ export function CheckoutForm() {
     <>
       <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
       <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-3">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 lg:col-span-2">
+        <Reveal className="lg:col-span-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <h2 className="font-display text-lg font-semibold">Shipping Address</h2>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -166,8 +168,9 @@ export function CheckoutForm() {
             {submitting ? "Redirecting to payment..." : `Pay ${formatINR(total)}`}
           </Button>
         </form>
+        </Reveal>
 
-        <div className="rounded-xl border border-[var(--color-ink)]/10 p-6">
+        <Reveal delay={0.15} className="rounded-xl border border-[var(--color-ink)]/10 p-6">
           <h2 className="font-display text-lg font-semibold">Order Summary</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {items.map((item) => (
@@ -210,7 +213,7 @@ export function CheckoutForm() {
               <span>{formatINR(total)}</span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </>
   );

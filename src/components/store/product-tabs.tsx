@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/store/product-card";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 import type { ProductCard as ProductCardType } from "@/types";
 
 export function ProductTabs({
@@ -31,7 +32,9 @@ export function ProductTabs({
             <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
               Fan favorites
             </p>
-            <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">Shop the Collection</h2>
+            <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
+              <TextReveal text="Shop the Collection" />
+            </h2>
           </div>
           <div className="flex items-center gap-6">
             <TabsList>
@@ -43,7 +46,7 @@ export function ProductTabs({
                 type="button"
                 onClick={() => scroll("left")}
                 aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)]"
+                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)] active:scale-95"
               >
                 <ChevronLeft className="size-4" />
               </button>
@@ -51,7 +54,7 @@ export function ProductTabs({
                 type="button"
                 onClick={() => scroll("right")}
                 aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)]"
+                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)] active:scale-95"
               >
                 <ChevronRight className="size-4" />
               </button>

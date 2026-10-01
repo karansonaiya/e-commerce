@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SignOutButton } from "@/components/store/sign-out-button";
 import { OrderHistoryLive } from "@/components/store/order-history-live";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata = { title: "My Account" };
 
@@ -35,7 +36,7 @@ export default async function AccountPage() {
 
   return (
     <div className="container-x py-12">
-      <div className="flex items-center justify-between">
+      <Reveal className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {user.image && (
             <Image src={user.image} alt={user.name ?? ""} width={56} height={56} className="rounded-full" />
@@ -46,7 +47,7 @@ export default async function AccountPage() {
           </div>
         </div>
         <SignOutButton />
-      </div>
+      </Reveal>
 
       <h2 className="font-display mt-10 text-xl font-semibold">Order History</h2>
 

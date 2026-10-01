@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/utils";
 import { OrderDetailLive } from "@/components/store/order-detail-live";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata = { title: "Order Details" };
 
@@ -51,7 +52,7 @@ export default async function AccountOrderDetailPage({
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+        <Reveal className="lg:col-span-2">
           <OrderDetailLive
             order={{
               id: order.id,
@@ -62,14 +63,14 @@ export default async function AccountOrderDetailPage({
               trackingUrl: order.trackingUrl,
             }}
           />
-        </div>
+        </Reveal>
 
         <div className="space-y-6">
-          <div className="rounded-xl border border-[var(--color-ink)]/10 p-5">
+          <Reveal delay={0.1} className="rounded-xl border border-[var(--color-ink)]/10 p-5">
             <h2 className="font-display font-semibold">Items</h2>
             <ul className="mt-3 divide-y divide-[var(--color-ink)]/5">
               {order.items.map((item) => (
-                <li key={item.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
+                <li key={item.id} className="group flex items-center justify-between gap-3 py-2.5 text-sm">
                   <div className="flex items-center gap-3">
                     <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)]">
                       {item.image && (
@@ -78,7 +79,7 @@ export default async function AccountOrderDetailPage({
                           alt={item.name}
                           width={48}
                           height={48}
-                          className="size-full object-cover"
+                          className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
                           unoptimized
                         />
                       )}
@@ -95,9 +96,9 @@ export default async function AccountOrderDetailPage({
               <span>Total</span>
               <span>{formatINR(order.total)}</span>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="rounded-xl border border-[var(--color-ink)]/10 p-5">
+          <Reveal delay={0.2} className="rounded-xl border border-[var(--color-ink)]/10 p-5">
             <h2 className="font-display font-semibold">Shipping Address</h2>
             <p className="mt-2 text-sm">{order.address.fullName}</p>
             <p className="text-sm text-[var(--color-ink-soft)]">{order.address.phone}</p>
@@ -106,7 +107,7 @@ export default async function AccountOrderDetailPage({
               {order.address.line2 ? `, ${order.address.line2}` : ""}, {order.address.city},{" "}
               {order.address.state} {order.address.postalCode}
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
     </div>

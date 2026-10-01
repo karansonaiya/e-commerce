@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 const REVIEWS = [
   {
@@ -29,18 +30,25 @@ export function ReviewsSection() {
         <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
           Real people, real reviews
         </p>
-        <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">Loved by thousands</h2>
+        <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
+          <TextReveal text="Loved by thousands" />
+        </h2>
       </Reveal>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {REVIEWS.map((r, idx) => (
-          <Reveal key={r.name} delay={idx * 0.1} className="rounded-2xl border border-[var(--color-ink)]/10 bg-white p-6">
+          <Reveal
+            key={r.name}
+            delay={idx * 0.1}
+            className="group rounded-2xl border border-[var(--color-ink)]/10 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-[var(--color-brand)]/20 hover:shadow-xl hover:shadow-black/5"
+          >
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
-                  className={`size-4 ${
+                  className={`size-4 transition-transform duration-300 group-hover:scale-110 ${
                     i < r.rating ? "fill-[var(--color-gold)] text-[var(--color-gold)]" : "text-[var(--color-ink)]/15"
                   }`}
+                  style={{ transitionDelay: `${i * 40}ms` }}
                 />
               ))}
             </div>
