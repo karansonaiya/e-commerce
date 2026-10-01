@@ -45,7 +45,7 @@ export default async function ProductPage({
 
         <div className="lg:sticky lg:top-24">
           <Reveal>
-            <p className="text-sm uppercase tracking-wide text-[var(--color-brand)]">
+            <p className="text-sm uppercase tracking-wide text-[var(--color-brand-dark)]">
               {product.category.name}
             </p>
             <h1 className="font-display mt-1 text-3xl font-semibold sm:text-4xl">

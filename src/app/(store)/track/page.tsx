@@ -8,7 +8,7 @@ export default function TrackOrderPage() {
   return (
     <div className="container-x py-16">
       <Reveal className="mx-auto max-w-2xl text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
+        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">
           Order Status
         </p>
         <h1 className="font-display mt-2 text-4xl font-semibold">

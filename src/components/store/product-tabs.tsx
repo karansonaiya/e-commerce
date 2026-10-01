@@ -29,7 +29,7 @@ export function ProductTabs({
       <Tabs defaultValue="bestsellers" onValueChange={(v) => setTab(v as typeof tab)}>
         <Reveal className="mb-10 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
+            <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">
               Fan favorites
             </p>
             <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
@@ -46,7 +46,7 @@ export function ProductTabs({
                 type="button"
                 onClick={() => scroll("left")}
                 aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)] active:scale-95"
+                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand-dark)] active:scale-95"
               >
                 <ChevronLeft className="size-4" />
               </button>
@@ -54,7 +54,7 @@ export function ProductTabs({
                 type="button"
                 onClick={() => scroll("right")}
                 aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand)] active:scale-95"
+                className="flex size-9 items-center justify-center rounded-full border border-[var(--color-ink)]/15 text-[var(--color-ink-soft)] transition-all duration-300 hover:scale-110 hover:border-[var(--color-brand)]/40 hover:text-[var(--color-brand-dark)] active:scale-95"
               >
                 <ChevronRight className="size-4" />
               </button>

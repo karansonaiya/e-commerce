@@ -9,7 +9,7 @@ export default function ContactPage() {
   return (
     <div className="container-x py-16">
       <Reveal className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">Get in touch</p>
+        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">Get in touch</p>
         <h1 className="font-display mt-2 text-4xl font-semibold">
           <TextReveal text="Contact Us" />
         </h1>
@@ -49,7 +49,7 @@ function ContactInfo({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] transition-all duration-300 hover:scale-110 hover:bg-[var(--color-brand)] hover:text-[var(--color-ink)]">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand-dark)] transition-all duration-300 hover:scale-110 hover:bg-[var(--color-brand)] hover:text-[var(--color-ink)]">
         <Icon className="size-4" />
       </div>
       <div>

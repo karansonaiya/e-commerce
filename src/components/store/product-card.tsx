@@ -49,7 +49,7 @@ export function ProductCard({ product }: { product: ProductCardType }) {
             <Heart
               className={cn(
                 "size-4 transition-transform",
-                wished && "fill-[var(--color-brand)] text-[var(--color-brand)] scale-110"
+                wished && "fill-[var(--color-brand)] text-[var(--color-brand-dark)] scale-110"
               )}
             />
           </button>
@@ -85,7 +85,7 @@ export function ProductCard({ product }: { product: ProductCardType }) {
           {product.category.name}
         </p>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="mt-1 line-clamp-2 font-display text-base font-medium text-[var(--color-ink)] hover:text-[var(--color-brand)]">
+          <h3 className="mt-1 line-clamp-2 font-display text-base font-medium text-[var(--color-ink)] hover:text-[var(--color-brand-dark)]">
             {product.name}
           </h3>
         </Link>

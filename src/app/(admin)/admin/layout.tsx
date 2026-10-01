@@ -34,7 +34,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <span className="font-display text-xl font-bold text-[var(--color-ink)]">
             {SITE_NAME.toUpperCase()}
           </span>
-          <span className="ml-2 rounded-full bg-[var(--color-brand)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-brand)]">
+          <span className="ml-2 rounded-full bg-[var(--color-brand)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-brand-dark)]">
             Admin
           </span>
         </div>

@@ -43,7 +43,7 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
     return (
       <p className="mt-4 text-sm text-[var(--color-ink-soft)]">
         You haven&apos;t placed any orders yet.{" "}
-        <Link href="/collections/all" className="font-medium text-[var(--color-brand)]">
+        <Link href="/collections/all" className="font-medium text-[var(--color-brand-dark)]">
           Start shopping
         </Link>
         .
@@ -89,7 +89,7 @@ export function OrderHistoryLive({ userId, initialOrders }: { userId: string; in
             </ul>
             <div className="mt-3 flex items-center justify-between">
               <p className="font-semibold">{formatINR(order.total)}</p>
-              <span className="text-xs font-medium text-[var(--color-brand)] transition-transform duration-300 group-hover:translate-x-1">
+              <span className="text-xs font-medium text-[var(--color-brand-dark)] transition-transform duration-300 group-hover:translate-x-1">
                 Track order →
               </span>
             </div>

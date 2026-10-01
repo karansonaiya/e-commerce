@@ -5,14 +5,6 @@ import { Reveal } from "@/components/ui/reveal";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { getProductsByCategorySlug } from "@/lib/data/products";
 import { getCategoryBySlug } from "@/lib/data/categories";
-import { CATEGORY_SLUGS } from "@/lib/constants";
-
-const TITLES: Record<string, string> = {
-  all: "All Products",
-  "face-wash": "Face Wash",
-  serum: "Serum",
-  shampoo: "Shampoo",
-};
 
 export async function generateMetadata({
   params,
@@ -20,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const title = TITLES[slug] ?? "Collection";
+  const title = slug === "all" ? "All Products" : (await getCategoryBySlug(slug))?.name ?? "Collection";
   return {
     title,
     description: `Shop premium ${title.toLowerCase()} from Westoria.`,
@@ -34,21 +26,19 @@ export default async function CollectionPage({
 }) {
   const { slug } = await params;
 
-  if (slug !== "all" && !CATEGORY_SLUGS.includes(slug as (typeof CATEGORY_SLUGS)[number])) {
+  const category = slug !== "all" ? await getCategoryBySlug(slug) : null;
+  if (slug !== "all" && !category) {
     notFound();
   }
 
-  const [products, category] = await Promise.all([
-    getProductsByCategorySlug(slug),
-    slug !== "all" ? getCategoryBySlug(slug) : Promise.resolve(null),
-  ]);
+  const products = await getProductsByCategorySlug(slug);
 
-  const title = TITLES[slug] ?? "Collection";
+  const title = slug === "all" ? "All Products" : category?.name ?? "Collection";
 
   return (
     <div className="container-x py-12">
       <Reveal className="mb-10 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">Collection</p>
+        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">Collection</p>
         <h1 className="font-display mt-2 text-4xl font-semibold">
           <TextReveal text={title} />
         </h1>

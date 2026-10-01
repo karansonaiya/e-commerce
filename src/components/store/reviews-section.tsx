@@ -27,7 +27,7 @@ export function ReviewsSection() {
   return (
     <section className="container-x py-16 md:py-24">
       <Reveal className="mb-12 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
+        <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">
           Real people, real reviews
         </p>
         <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">

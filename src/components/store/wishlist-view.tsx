@@ -41,7 +41,7 @@ export function WishlistView() {
       <div className="mt-10 flex flex-col items-center gap-3 py-16 text-center">
         <Heart className="size-10 text-[var(--color-ink-soft)]/30" />
         <p className="text-[var(--color-ink-soft)]">Your wishlist is empty.</p>
-        <Link href="/collections/all" className="font-medium text-[var(--color-brand)]">
+        <Link href="/collections/all" className="font-medium text-[var(--color-brand-dark)]">
           Start shopping
         </Link>
       </div>

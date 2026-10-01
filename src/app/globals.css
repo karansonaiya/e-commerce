@@ -46,6 +46,22 @@ body {
   font-family: var(--font-fraunces), Georgia, serif;
 }
 
+/* Native <button>s default to cursor: default (unlike <a>, which is already
+   pointer) — every clickable control in this app should show a pointer. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="menuitem"],
+[role="option"],
+[role="tab"],
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 * {
   scrollbar-color: var(--color-brand) var(--color-cream);
 }

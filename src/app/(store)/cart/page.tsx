@@ -52,7 +52,7 @@ export default function CartPage() {
               <div className="flex flex-1 flex-col justify-between">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <Link href={`/products/${item.slug}`} className="font-medium hover:text-[var(--color-brand)]">
+                    <Link href={`/products/${item.slug}`} className="font-medium hover:text-[var(--color-brand-dark)]">
                       {item.name}
                     </Link>
                     <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
@@ -62,7 +62,7 @@ export default function CartPage() {
                   <button
                     onClick={() => removeItem(item.productId)}
                     aria-label="Remove item"
-                    className="text-[var(--color-ink-soft)]/50 transition-all duration-300 hover:scale-110 hover:text-[var(--color-brand)] active:scale-90"
+                    className="text-[var(--color-ink-soft)]/50 transition-all duration-300 hover:scale-110 hover:text-[var(--color-brand-dark)] active:scale-90"
                   >
                     <Trash2 className="size-4" />
                   </button>
@@ -70,7 +70,7 @@ export default function CartPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center rounded-full border border-[var(--color-ink)]/15">
                     <button
-                      className="p-2 transition-colors hover:text-[var(--color-brand)]"
+                      className="p-2 transition-colors hover:text-[var(--color-brand-dark)]"
                       onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                       aria-label="Decrease quantity"
                     >
@@ -78,7 +78,7 @@ export default function CartPage() {
                     </button>
                     <span className="w-8 text-center text-sm">{item.quantity}</span>
                     <button
-                      className="p-2 transition-colors hover:text-[var(--color-brand)]"
+                      className="p-2 transition-colors hover:text-[var(--color-brand-dark)]"
                       onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                       aria-label="Increase quantity"
                       disabled={item.quantity >= item.stock}

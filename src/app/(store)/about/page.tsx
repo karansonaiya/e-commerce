@@ -48,7 +48,7 @@ export default function AboutPage() {
           ].map((item, i) => (
             <div key={item.title} className="group text-center">
               <Reveal variant="pop" delay={i * 0.1}>
-                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)]">
+                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand-dark)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)]">
                   <item.icon className="size-5" />
                 </div>
               </Reveal>

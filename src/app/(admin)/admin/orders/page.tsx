@@ -39,7 +39,7 @@ export default async function AdminOrdersPage() {
               {orders.map((order) => (
                 <tr key={order.id} className="border-b border-[var(--color-ink)]/5 last:border-0">
                   <td className="p-4 font-medium">
-                    <Link href={`/admin/orders/${order.id}`} className="hover:text-[var(--color-brand)]">
+                    <Link href={`/admin/orders/${order.id}`} className="hover:text-[var(--color-brand-dark)]">
                       #{order.id.slice(-8).toUpperCase()}
                     </Link>
                   </td>

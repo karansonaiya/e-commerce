@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Plus_Jakarta_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/providers";
 import { auth } from "@/lib/auth";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-body",
   subsets: ["latin"],
 });
@@ -34,9 +34,6 @@ export const metadata: Metadata = {
     siteName: "Westoria",
     type: "website",
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -45,9 +42,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${fraunces.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+      {/* suppressHydrationWarning here too: browser extensions (e.g. Bitdefender's
+          Anti-tracker) inject attributes like bis_skin_checked into every <div>
+          before React hydrates, which otherwise logs a scary but harmless
+          hydration-mismatch warning that has nothing to do with our code. */}
+      <body
+        className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]"
+        suppressHydrationWarning
+      >
         <Providers session={session}>{children}</Providers>
       </body>
     </html>

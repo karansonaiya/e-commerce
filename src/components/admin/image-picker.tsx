@@ -120,7 +120,7 @@ export function ImagePicker({ defaultValue }: { defaultValue?: string }) {
           disabled={isUploading}
           onClick={() => fileInputRef.current?.click()}
           aria-label="Add product image"
-          className="flex size-24 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-[var(--color-ink)]/25 text-[var(--color-ink-soft)] transition hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] disabled:opacity-50"
+          className="flex size-24 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-[var(--color-ink)]/25 text-[var(--color-ink-soft)] transition hover:border-[var(--color-brand)] hover:text-[var(--color-brand-dark)] disabled:opacity-50"
         >
           <Plus className="size-6" />
           <span className="text-xs font-medium">Add</span>
@@ -169,7 +169,7 @@ export function ImagePicker({ defaultValue }: { defaultValue?: string }) {
 
       <input type="hidden" name="images" value={doneUrls.join(",")} />
       {doneUrls.length === 0 && !isUploading && (
-        <p className="mt-1 text-xs text-[var(--color-brand)]">At least one image is required.</p>
+        <p className="mt-1 text-xs text-[var(--color-brand-dark)]">At least one image is required.</p>
       )}
     </div>
   );

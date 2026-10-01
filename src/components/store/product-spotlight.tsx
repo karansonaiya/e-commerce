@@ -115,7 +115,7 @@ export function ProductSpotlight() {
           <TextReveal
             text="Westoria"
             delay={0.1}
-            className="text-[var(--color-brand)]"
+            className="text-[var(--color-brand-dark)]"
           />
         </h2>
       </div>

@@ -66,7 +66,7 @@ export function Header() {
                   <Link
                     href="/admin"
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-md px-2 py-3 text-sm font-medium text-[var(--color-brand)]"
+                    className="rounded-md px-2 py-3 text-sm font-medium text-[var(--color-brand-dark)]"
                   >
                     Admin Panel
                   </Link>
@@ -76,7 +76,7 @@ export function Header() {
           </Sheet>
         </div>
 
-        <Link href="/" className="font-display text-2xl font-bold tracking-wide text-[var(--color-ink)]">
+        <Link href="/" className="font-display text-3xl font-black tracking-wide text-[var(--color-ink)] sm:text-4xl">
           {SITE_NAME.toUpperCase()}
         </Link>
 
@@ -86,8 +86,8 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-base font-medium tracking-wide text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-brand)]",
-                pathname === link.href && "text-[var(--color-brand)]"
+                "text-base font-medium tracking-wide text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-brand-dark)]",
+                pathname === link.href && "text-[var(--color-brand-dark)]"
               )}
             >
               {link.label}

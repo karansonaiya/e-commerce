@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 export function ProductImageStack({ images, name }: { images: string[]; name: string }) {
   const [zoomed, setZoomed] = useState<number | null>(null);
   const [active, setActive] = useState(0);
+  const [hover, setHover] = useState<{ index: number; x: number; y: number } | null>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -43,6 +44,11 @@ export function ProductImageStack({ images, name }: { images: string[]; name: st
               imageRefs.current[i] = el;
             }}
             className="group relative aspect-square overflow-hidden bg-[var(--color-cream-dark)] first:rounded-t-2xl last:rounded-b-2xl"
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setHover({ index: i, x: e.clientX - rect.left, y: e.clientY - rect.top });
+            }}
+            onMouseLeave={() => setHover((h) => (h?.index === i ? null : h))}
           >
             <Reveal variant="zoom" delay={i === 0 ? 0 : 0.05} className="absolute inset-0">
               <Image src={img} alt={`${name} ${i + 1}`} fill priority={i === 0} className="object-cover" />
@@ -52,7 +58,11 @@ export function ProductImageStack({ images, name }: { images: string[]; name: st
               <DialogTrigger asChild>
                 <button
                   aria-label="Zoom image"
-                  className="absolute left-1/2 top-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 opacity-0 shadow-md transition-all duration-300 hover:scale-110 hover:bg-white group-hover:opacity-100"
+                  style={hover?.index === i ? { left: hover.x, top: hover.y } : undefined}
+                  className={cn(
+                    "absolute flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 shadow-md transition-opacity duration-150 hover:scale-110 hover:bg-white",
+                    hover?.index === i ? "opacity-100" : "pointer-events-none left-1/2 top-1/2 opacity-0"
+                  )}
                 >
                   <Plus className="size-5 text-[var(--color-ink)]" />
                 </button>

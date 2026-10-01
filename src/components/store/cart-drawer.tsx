@@ -40,14 +40,14 @@ export function CartDrawer() {
                         <Link
                           href={`/products/${item.slug}`}
                           onClick={closeCart}
-                          className="text-sm font-medium text-[var(--color-ink)] hover:text-[var(--color-brand)]"
+                          className="text-sm font-medium text-[var(--color-ink)] hover:text-[var(--color-brand-dark)]"
                         >
                           {item.name}
                         </Link>
                         <button
                           onClick={() => removeItem(item.productId)}
                           aria-label="Remove item"
-                          className="text-[var(--color-ink-soft)]/50 hover:text-[var(--color-brand)]"
+                          className="text-[var(--color-ink-soft)]/50 hover:text-[var(--color-brand-dark)]"
                         >
                           <Trash2 className="size-4" />
                         </button>

@@ -106,7 +106,7 @@ export function TrackOrderForm() {
 
           {(result.trackingNumber || result.courierName) && (
             <div className="mt-6 flex items-start gap-3 rounded-lg bg-[var(--color-cream-dark)] p-4">
-              <Truck className="mt-0.5 size-5 shrink-0 text-[var(--color-brand)]" />
+              <Truck className="mt-0.5 size-5 shrink-0 text-[var(--color-brand-dark)]" />
               <div>
                 {result.courierName && (
                   <p className="text-sm text-[var(--color-ink-soft)]">Courier: {result.courierName}</p>
@@ -122,7 +122,7 @@ export function TrackOrderForm() {
                         navigator.clipboard.writeText(result.trackingNumber ?? "");
                         toast.success("Tracking number copied");
                       }}
-                      className="text-[var(--color-ink-soft)]/60 hover:text-[var(--color-brand)]"
+                      className="text-[var(--color-ink-soft)]/60 hover:text-[var(--color-brand-dark)]"
                     >
                       <Copy className="size-3.5" />
                     </button>
@@ -133,7 +133,7 @@ export function TrackOrderForm() {
                     href={result.trackingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-block text-sm font-medium text-[var(--color-brand)] hover:underline"
+                    className="mt-2 inline-block text-sm font-medium text-[var(--color-brand-dark)] hover:underline"
                   >
                     Track on courier website →
                   </a>

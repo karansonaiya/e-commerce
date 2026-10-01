@@ -38,7 +38,7 @@ export default async function AdminDashboardPage() {
         {stats.map((s) => (
           <Card key={s.label}>
             <CardContent className="flex items-center gap-4 p-5">
-              <div className="flex size-11 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
+              <div className="flex size-11 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand-dark)]">
                 <s.icon className="size-5" />
               </div>
               <div>

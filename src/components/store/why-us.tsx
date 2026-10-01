@@ -30,7 +30,7 @@ export function WhyUs() {
     <section className="bg-[var(--color-cream-dark)] py-16 md:py-24">
       <div className="container-x">
         <Reveal className="mb-12 text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand)]">
+          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--color-brand-dark)]">
             Why Westoria?
           </p>
           <h2 className="font-display mt-2 text-3xl font-semibold sm:text-4xl">
@@ -41,7 +41,7 @@ export function WhyUs() {
           {POINTS.map((p, i) => (
             <div key={p.title} className="group text-center">
               <Reveal variant="pop" delay={i * 0.1}>
-                <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)] group-hover:shadow-lg group-hover:shadow-[var(--color-brand)]/30">
+                <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand-dark)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--color-brand)] group-hover:text-[var(--color-ink)] group-hover:shadow-lg group-hover:shadow-[var(--color-brand)]/30">
                   <p.icon className="size-6" />
                 </div>
               </Reveal>

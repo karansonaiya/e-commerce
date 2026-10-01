@@ -10,8 +10,6 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const CATEGORY_SLUGS = ["face-wash", "serum", "shampoo"] as const;
-
 export const FOOTER_LINKS = {
   shop: [
     { label: "Face Wash", href: "/collections/face-wash" },

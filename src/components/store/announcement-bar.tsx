@@ -4,10 +4,11 @@ export function AnnouncementBar() {
   const items = [...ANNOUNCEMENTS, ...ANNOUNCEMENTS];
   return (
     <div className="w-full overflow-hidden bg-[var(--color-brand)] py-2.5 text-[var(--color-ink)]">
-      <div className="animate-marquee flex w-max gap-16 whitespace-nowrap text-sm font-medium tracking-wide">
+      <div className="animate-marquee flex w-max items-center gap-16 whitespace-nowrap text-sm font-medium tracking-wide">
         {items.map((text, i) => (
           <span key={i} className="flex items-center gap-16">
             {text}
+            <span className="size-1.5 rounded-full bg-[var(--color-ink)]" aria-hidden="true" />
           </span>
         ))}
       </div>

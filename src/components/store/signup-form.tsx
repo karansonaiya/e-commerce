@@ -107,7 +107,7 @@ export function SignupForm() {
 
       <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-[var(--color-brand)]">
+        <Link href="/login" className="font-medium text-[var(--color-brand-dark)]">
           Log in
         </Link>
       </p>

@@ -64,7 +64,7 @@ export function OrderDetailLive({ order: initial }: { order: OrderDetailData }) 
 
       {(order.trackingNumber || order.courierName) && (
         <div className="mt-6 flex items-start gap-3 rounded-xl border border-[var(--color-ink)]/10 p-5">
-          <Truck className="mt-0.5 size-5 shrink-0 text-[var(--color-brand)]" />
+          <Truck className="mt-0.5 size-5 shrink-0 text-[var(--color-brand-dark)]" />
           <div className="flex-1">
             <h3 className="font-display font-semibold">Shipment Tracking</h3>
             {order.courierName && (
@@ -81,7 +81,7 @@ export function OrderDetailLive({ order: initial }: { order: OrderDetailData }) 
                     navigator.clipboard.writeText(order.trackingNumber ?? "");
                     toast.success("Tracking number copied");
                   }}
-                  className="text-[var(--color-ink-soft)]/60 hover:text-[var(--color-brand)]"
+                  className="text-[var(--color-ink-soft)]/60 hover:text-[var(--color-brand-dark)]"
                 >
                   <Copy className="size-3.5" />
                 </button>
@@ -92,7 +92,7 @@ export function OrderDetailLive({ order: initial }: { order: OrderDetailData }) 
                 href={order.trackingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block text-sm font-medium text-[var(--color-brand)] hover:underline"
+                className="mt-2 inline-block text-sm font-medium text-[var(--color-brand-dark)] hover:underline"
               >
                 Track on courier website →
               </a>
