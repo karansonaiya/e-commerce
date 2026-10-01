@@ -118,7 +118,7 @@ export async function createProduct(
 
   revalidatePath("/admin/products");
   revalidatePath("/collections/all");
-  redirect("/admin/products");
+  redirect("/admin/products?created=1");
 }
 
 export async function updateProduct(
@@ -158,7 +158,7 @@ export async function updateProduct(
     return { error: describeProductError(err), values };
   }
 
-  redirect("/admin/products");
+  redirect("/admin/products?updated=1");
 }
 
 export async function deleteProduct(id: string) {

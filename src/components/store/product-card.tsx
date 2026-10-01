@@ -41,7 +41,9 @@ export function ProductCard({ product }: { product: ProductCardType }) {
           <button
             onClick={(e) => {
               e.preventDefault();
+              const willBeWished = !wished;
               toggle(product.id);
+              toast.success(willBeWished ? "Added to wishlist" : "Removed from wishlist");
             }}
             aria-label="Toggle wishlist"
             className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/90 transition-all duration-300 hover:scale-110 hover:bg-white active:scale-90"

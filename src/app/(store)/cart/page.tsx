@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { TextReveal } from "@/components/ui/text-reveal";
@@ -60,7 +61,10 @@ export default function CartPage() {
                     </p>
                   </div>
                   <button
-                    onClick={() => removeItem(item.productId)}
+                    onClick={() => {
+                      removeItem(item.productId);
+                      toast.success(`${item.name} removed from bag`);
+                    }}
                     aria-label="Remove item"
                     className="text-[var(--color-ink-soft)]/50 transition-all duration-300 hover:scale-110 hover:text-[var(--color-brand-dark)] active:scale-90"
                   >

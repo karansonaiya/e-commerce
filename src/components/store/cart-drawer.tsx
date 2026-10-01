@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cart-store";
@@ -45,7 +46,10 @@ export function CartDrawer() {
                           {item.name}
                         </Link>
                         <button
-                          onClick={() => removeItem(item.productId)}
+                          onClick={() => {
+                            removeItem(item.productId);
+                            toast.success(`${item.name} removed from bag`);
+                          }}
                           aria-label="Remove item"
                           className="text-[var(--color-ink-soft)]/50 hover:text-[var(--color-brand-dark)]"
                         >

@@ -53,7 +53,11 @@ export default async function AdminCategoriesPage() {
                   <td className="p-4">
                     <div className="flex justify-end gap-1">
                       <CategoryEditDialog category={c} />
-                      <DeleteButton action={deleteCategory.bind(null, c.id)} confirmText={`Delete "${c.name}"?`} />
+                      <DeleteButton
+                        action={deleteCategory.bind(null, c.id)}
+                        confirmText={`Delete "${c.name}"?`}
+                        successText="Category deleted"
+                      />
                     </div>
                   </td>
                 </tr>

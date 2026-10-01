@@ -6,7 +6,19 @@ import { requireAdmin } from "@/lib/require-admin";
 import { categorySchema } from "@/lib/validations/product";
 import { slugify } from "@/lib/utils";
 
-export type CategoryFormState = { error?: string } | null;
+export type CategoryFormState = {
+  error?: string;
+  fieldErrors?: Record<string, string>;
+} | null;
+
+function fieldErrorsFrom(issues: { path: (string | number)[]; message: string }[]) {
+  const fieldErrors: Record<string, string> = {};
+  for (const issue of issues) {
+    const key = String(issue.path[0]);
+    if (!fieldErrors[key]) fieldErrors[key] = issue.message;
+  }
+  return fieldErrors;
+}
 
 async function ensureUniqueCategorySlug(slug: string, excludeId?: string) {
   let candidate = slug;
@@ -50,7 +62,10 @@ export async function createCategory(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return {
+      error: parsed.error.issues[0]?.message ?? "Invalid input",
+      fieldErrors: fieldErrorsFrom(parsed.error.issues),
+    };
   }
 
   try {
@@ -81,7 +96,10 @@ export async function updateCategory(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return {
+      error: parsed.error.issues[0]?.message ?? "Invalid input",
+      fieldErrors: fieldErrorsFrom(parsed.error.issues),
+    };
   }
 
   try {

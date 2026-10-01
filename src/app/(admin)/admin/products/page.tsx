@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus, Pencil } from "lucide-react";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { formatINR } from "@/lib/utils";
 import { deleteProduct } from "@/actions/products";
 import { DeleteButton } from "@/components/admin/delete-button";
+import { ProductsPageToast } from "@/components/admin/products-page-toast";
 
 export const metadata = { title: "Products — Admin" };
 
@@ -19,6 +21,9 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
+      <Suspense fallback={null}>
+        <ProductsPageToast />
+      </Suspense>
       <div className="flex items-center justify-between">
         <h1 className="font-display text-2xl font-semibold">Products</h1>
         <Button asChild>
@@ -78,7 +83,11 @@ export default async function AdminProductsPage() {
                         >
                           <Pencil className="size-4" />
                         </Link>
-                        <DeleteButton action={deleteProduct.bind(null, p.id)} confirmText={`Delete "${p.name}"?`} />
+                        <DeleteButton
+                          action={deleteProduct.bind(null, p.id)}
+                          confirmText={`Delete "${p.name}"?`}
+                          successText="Product deleted"
+                        />
                       </div>
                     </td>
                   </tr>

@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,9 +65,10 @@ export function ProductForm({
   categories: Category[];
   defaults?: ProductDefaults;
 }) {
-  const [state, formAction] = useActionState(action, null);
+  const [state, formAction, isPending] = useActionState(action, null);
   const [values, setValues] = useState<ProductFormValues>(() => valuesFromDefaults(defaults));
   const formRef = useRef<HTMLFormElement>(null);
+  const wasPending = useRef(false);
 
   // Native <form> fields reset after any server action submission (success or
   // error) — repopulate whatever the admin last typed from the returned state
@@ -83,6 +85,15 @@ export function ProductForm({
       el?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [state]);
+
+  // On success the action redirects server-side, so this component never
+  // settles into a "success" state here — only failures return to it.
+  useEffect(() => {
+    if (wasPending.current && !isPending && state?.error) {
+      toast.error(state.error);
+    }
+    wasPending.current = isPending;
+  }, [isPending, state]);
 
   function set<K extends keyof ProductFormValues>(key: K, value: ProductFormValues[K]) {
     setValues((v) => ({ ...v, [key]: value }));
