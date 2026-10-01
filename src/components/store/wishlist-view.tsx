@@ -10,14 +10,13 @@ import type { ProductCard as ProductCardType } from "@/types";
 export function WishlistView() {
   const productIds = useWishlistStore((s) => s.productIds);
   const [products, setProducts] = useState<ProductCardType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(productIds.length > 0);
 
   useEffect(() => {
-    if (productIds.length === 0) {
-      setProducts([]);
-      setLoading(false);
-      return;
-    }
+    if (productIds.length === 0) return;
+
+    let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- marks the start of the fetch this effect performs, resolved in the .then/.finally below
     setLoading(true);
     fetch("/api/products/by-ids", {
       method: "POST",
@@ -25,15 +24,19 @@ export function WishlistView() {
       body: JSON.stringify({ ids: productIds }),
     })
       .then((res) => res.json())
-      .then((data) => setProducts(data.products ?? []))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (!cancelled) setProducts(data.products ?? []);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [productIds]);
 
-  if (loading) {
-    return <p className="mt-8 text-sm text-[var(--color-ink-soft)]">Loading...</p>;
-  }
-
-  if (products.length === 0) {
+  if (productIds.length === 0) {
     return (
       <div className="mt-10 flex flex-col items-center gap-3 py-16 text-center">
         <Heart className="size-10 text-[var(--color-ink-soft)]/30" />
@@ -43,6 +46,10 @@ export function WishlistView() {
         </Link>
       </div>
     );
+  }
+
+  if (loading) {
+    return <p className="mt-8 text-sm text-[var(--color-ink-soft)]">Loading...</p>;
   }
 
   return (
